@@ -37,15 +37,19 @@
                 android:id="@+id/catTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="#40000000"
-                android:padding="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 android:text="Category Title"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold"
+                android:textColor="#393232"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins"
+                android:ellipsize="end"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/catImage" />
+                app:layout_constraintStart_toStartOf="@+id/catImage"
+                app:layout_constraintTop_toBottomOf="@+id/catImage" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

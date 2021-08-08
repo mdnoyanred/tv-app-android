@@ -32,7 +32,7 @@ public class Details extends AppCompatActivity {
     public static final String TAG = "TAG";
     PlayerView playerView;
     ImageView fbLink, twtLink, ytLink, webLink, playerLogo;
-    TextView channelTitle, channelDesc, playerTitle;
+    TextView channelTitle, channelDesc, playerTitle, playerDesc;
     ImageView fullScreen;
     ProgressBar progressBar;
     boolean isFullScreen = false;
@@ -70,6 +70,8 @@ public class Details extends AppCompatActivity {
                         actionBar.show();
                     }
 
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
                     ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
                     params.width = params.MATCH_PARENT;
                     params.height = (int) (200 * getResources().getDisplayMetrics().density);
@@ -84,6 +86,8 @@ public class Details extends AppCompatActivity {
                     if (actionBar != null) {
                         actionBar.hide();
                     }
+
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
                     ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
                     params.width = params.MATCH_PARENT;
@@ -108,11 +112,13 @@ public class Details extends AppCompatActivity {
         Picasso.get().load(channel.getThumbnail()).into(playerLogo);
 
         playerTitle = playerView.findViewById(R.id.playerName);
+        playerDesc = playerView.findViewById(R.id.playerDesc);
 
         channelTitle.setText(channel.getName());
         channelDesc.setText(channel.getDescription());
 
         playerTitle.setText(channel.getName());
+        playerDesc.setText(channel.getDescription());
 
         fbLink.setOnClickListener(new View.OnClickListener() {
             @Override
