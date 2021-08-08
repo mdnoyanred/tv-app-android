@@ -70,8 +70,6 @@ public class Details extends AppCompatActivity {
                         actionBar.show();
                     }
 
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
                     ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
                     params.width = params.MATCH_PARENT;
                     params.height = (int) (200 * getResources().getDisplayMetrics().density);
