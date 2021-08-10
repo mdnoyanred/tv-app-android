@@ -2,4 +2,5 @@
     <string name="app_name">TV App</string>
     <string name="open">open</string>
     <string name="close">close</string>
+    <string name="log_in_text">Sisäänkirjautuminen kannattaa, koska silloin saat lisää etuoikeuksia.<br /><br />Kirjaudu sisään tänään!<br /> <br/>Tähän sovellukseen kirjaudutaan Jesun Maailma -tilillä.</string>
 </resources>

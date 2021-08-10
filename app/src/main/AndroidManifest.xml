@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TVApp">
         <activity
+            android:name=".ui.activities.Login"
+            android:exported="true" />
+        <activity
             android:name=".ui.activities.CategoryDetails"
             android:exported="true" />
         <activity
@@ -23,6 +26,18 @@
             android:configChanges="screenSize|layoutDirection|orientation|keyboardHidden"
             android:exported="true" />
         <activity
+            android:name=".ui.activities.SplashActivity"
+            android:configChanges="screenSize|layoutDirection|orientation"
+            android:exported="true"
+            android:theme="@style/Theme.TVApp.SplashScreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity
             android:name=".ui.activities.MainActivity"
             android:configChanges="screenSize|layoutDirection|orientation"
             android:exported="true"
@@ -30,7 +45,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 

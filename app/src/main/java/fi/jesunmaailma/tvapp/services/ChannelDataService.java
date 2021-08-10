@@ -42,23 +42,4 @@ public class ChannelDataService {
         queue.add(objectRequest);
     }
 
-    public void getCategoryData(String url, OnDataResponse onDataResponse) {
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                onDataResponse.onResponse(response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                onDataResponse.onError(error.getLocalizedMessage());
-            }
-        });
-
-        queue.add(objectRequest);
-    }
-
 }

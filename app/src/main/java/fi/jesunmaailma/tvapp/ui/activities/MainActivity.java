@@ -1,25 +1,42 @@
 package fi.jesunmaailma.tvapp.ui.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +65,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     ChannelDataService service;
 
+    FirebaseAuth auth;
+    FirebaseUser user;
+
+    GoogleSignInClient client;
+
+    CoordinatorLayout clRoot;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout = findViewById(R.id.drawer);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
+
+        clRoot = findViewById(R.id.clRoot);
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
 
@@ -81,6 +107,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+        
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+
+        client = GoogleSignIn.getClient(MainActivity.this, GoogleSignInOptions.DEFAULT_SIGN_IN);
 
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         bigSliderList.setLayoutManager(manager);
@@ -114,6 +145,138 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getEntertainmentChannel("https://jesunmaailma.ml/cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=Viihde&user_id=1");
             }
         });
+
+        UpdateNavHeader();
+    }
+
+    public void UpdateNavHeader() {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        TextView tvEmail = headerView.findViewById(R.id.tv_email);
+        TextView tvSignIn = headerView.findViewById(R.id.tv_login);
+        TextView tvSignOut = headerView.findViewById(R.id.tv_sign_out);
+
+        if (user != null) {
+            tvEmail.setVisibility(View.VISIBLE);
+            tvSignIn.setVisibility(View.GONE);
+            tvSignOut.setVisibility(View.VISIBLE);
+
+            tvEmail.setText(user.getEmail());
+        } else {
+            tvEmail.setVisibility(View.GONE);
+            tvSignIn.setVisibility(View.VISIBLE);
+            tvSignOut.setVisibility(View.GONE);
+        }
+
+        tvSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext()
+                        , Login.class);
+                startActivityForResult(intent, 100);
+            }
+        });
+
+        tvSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeDrawer(drawerLayout);
+                SignOutDialog(MainActivity.this);
+            }
+        });
+    }
+
+    public static void closeDrawer(DrawerLayout drawerLayout) {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        if (user == null) {
+            Snackbar snackbar = Snackbar.make(clRoot
+                    , ""
+                    , Snackbar.LENGTH_LONG);
+
+            View snackBarView = getLayoutInflater().inflate(R.layout.layout_snackbar_logged_out, null);
+
+            snackbar.getView().setBackgroundColor(Color.TRANSPARENT);
+
+            Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+
+            snackbarLayout.setPadding(0, 0, 0, 0);
+
+            snackbarLayout.addView(snackBarView, 0);
+
+            snackbar.setDuration(5000);
+            snackbar.show();
+        } else {
+            Snackbar snackbar = Snackbar.make(clRoot
+                    , ""
+                    , Snackbar.LENGTH_LONG);
+
+            View snackBarView = getLayoutInflater().inflate(R.layout.layout_snackbar_logged_in, null);
+
+            snackbar.getView().setBackgroundColor(Color.TRANSPARENT);
+
+            Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+
+            snackbarLayout.setPadding(0, 0, 0, 0);
+
+            TextView tvGreeting = snackBarView.findViewById(R.id.tv_greeting);
+            TextView tvEmail = snackBarView.findViewById(R.id.tv_email);
+
+            tvGreeting.setText(String.format("Hei %s!", user.getDisplayName()));
+            tvEmail.setText(String.format("(%s)", user.getEmail()));
+
+            snackbarLayout.addView(snackBarView, 0);
+
+            snackbar.setDuration(5000);
+            snackbar.show();
+        }
+        super.onStart();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            closeDrawer(drawerLayout);
+            startActivity(new Intent(getApplicationContext(), MainActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+            finish();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void SignOutDialog(final Activity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setCancelable(false);
+        builder.setTitle(user.getDisplayName());
+        builder.setMessage("Haluatko varmasti kirjautua ulos sovelluksesta?");
+        builder.setNegativeButton("Peruuta", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.setPositiveButton("Kirjaudu ulos", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                auth.signOut();
+
+                client.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        startActivity(new Intent(getApplicationContext()
+                                , MainActivity.class));
+                        finish();
+                    }
+                });
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override
