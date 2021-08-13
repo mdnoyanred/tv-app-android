@@ -3,4 +3,27 @@
     <string name="open">open</string>
     <string name="close">close</string>
     <string name="log_in_text">Sisäänkirjautuminen kannattaa, koska silloin saat lisää etuoikeuksia.<br /><br />Kirjaudu sisään tänään!<br /> <br/>Tähän sovellukseen kirjaudutaan Jesun Maailma -tilillä.</string>
+
+    <!-- Preference Titles -->
+    <string name="theme_title" translatable="false">Sovelluksen teema</string>
+    <string name="title_activity_settings" translatable="false">Asetukset</string>
+    <string name="open_source" translatable="false">Avoimen lähdekoodin ohjelmiston käyttöluvat</string>
+    <string name="open_source_title" translatable="false">Sovelluksen lähdekoodi</string>
+
+    <!-- Summary text -->
+    <string name="show_open_source" translatable="false">Näytä avoimen lähdekoodin ohjelmiston käyttöluvat.</string>
+    <string name="open_source_summary" translatable="false">Tämän valinnan painaminen avaa GitHubin ja näyttää miten tämä sovellus on tehty.</string>
+
+    <!-- Header titles -->
+    <string name="general_header" translatable="false">Yleiset</string>
+    <string name="other_header" translatable="false">Muut</string>
+    <string name="app_info_header" translatable="false">Tietoa sovelluksesta</string>
+    <string name="version_title" translatable="false">Sovelluksen versio</string>
+    <string name="example_summary" translatable="false">Versio tulee tähän.</string>
+
+    <string name="legal_information" translatable="false">Juridiset tiedot</string>
+    <string name="terms_of_service_summary" translatable="false">Näytä käyttöehdot.</string>
+    <string name="terms_of_service" translatable="false">Käyttöehdot</string>
+    <string name="privacy_policy" translatable="false">Tietosuojakäytäntö</string>
+    <string name="privacy_policy_summary" translatable="false">Näytä tietosuojakäytäntö.</string>
 </resources>

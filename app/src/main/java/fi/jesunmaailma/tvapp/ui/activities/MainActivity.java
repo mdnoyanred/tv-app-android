@@ -6,7 +6,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -22,8 +21,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -32,7 +29,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -152,17 +148,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void UpdateNavHeader() {
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
+        TextView tvName = headerView.findViewById(R.id.tv_name);
         TextView tvEmail = headerView.findViewById(R.id.tv_email);
         TextView tvSignIn = headerView.findViewById(R.id.tv_login);
         TextView tvSignOut = headerView.findViewById(R.id.tv_sign_out);
 
         if (user != null) {
+            tvName.setVisibility(View.VISIBLE);
             tvEmail.setVisibility(View.VISIBLE);
             tvSignIn.setVisibility(View.GONE);
             tvSignOut.setVisibility(View.VISIBLE);
 
+            tvName.setText(user.getDisplayName());
             tvEmail.setText(user.getEmail());
         } else {
+            tvName.setVisibility(View.GONE);
             tvEmail.setVisibility(View.GONE);
             tvSignIn.setVisibility(View.VISIBLE);
             tvSignOut.setVisibility(View.GONE);
@@ -171,6 +171,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         tvSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                closeDrawer(drawerLayout);
                 Intent intent = new Intent(getApplicationContext()
                         , Login.class);
                 startActivityForResult(intent, 100);
@@ -245,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(new Intent(getApplicationContext(), MainActivity.class)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
             finish();
+            overridePendingTransition(0, 0);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -271,6 +273,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         startActivity(new Intent(getApplicationContext()
                                 , MainActivity.class));
                         finish();
+                        overridePendingTransition(0, 0);
                     }
                 });
             }
@@ -282,16 +285,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.mi_home) {
-            drawerLayout.closeDrawer(GravityCompat.START);
+            closeDrawer(drawerLayout);
         }
 
         if (item.getItemId() == R.id.mi_categories) {
-            drawerLayout.closeDrawer(GravityCompat.START);
+            closeDrawer(drawerLayout);
             startActivity(new Intent(getApplicationContext(), Categories.class));
         }
 
         if (item.getItemId() == R.id.mi_exit) {
-            drawerLayout.closeDrawer(GravityCompat.START);
+            closeDrawer(drawerLayout);
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setCancelable(false);
             builder.setMessage("Haluatko varmasti poistua TV App-palvelusta?");
@@ -309,6 +312,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             });
             AlertDialog dialog = builder.create();
             dialog.show();
+        }
+
+        if (item.getItemId() == R.id.mi_settings) {
+            closeDrawer(drawerLayout);
+            startActivity(new Intent(getApplicationContext(), Settings.class));
         }
         return false;
     }

@@ -4,16 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#CC000000"
-    android:layoutDirection="ltr"
-    tools:targetApi="28">
+    android:background="#80000000">
 
     <ImageView
         android:id="@+id/playerLogo"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,13 +23,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
         android:fontFamily="@font/poppins"
         android:text="Channel title"
         android:textColor="@color/white"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/playerLogo"
-        app:layout_constraintTop_toTopOf="@+id/playerLogo" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/playerLogo" />
 
     <TextView
         android:id="@+id/playerDesc"
@@ -44,7 +43,7 @@
         android:text="Channel description"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/playerLogo"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/playerName" />
 
     <LinearLayout

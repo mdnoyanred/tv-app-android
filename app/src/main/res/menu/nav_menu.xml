@@ -13,4 +13,13 @@
         android:id="@+id/mi_exit"
         android:icon="@drawable/ic_exit"
         android:title="Poistu" />
+
+    <item android:title="Asetukset">
+        <menu>
+            <item
+                android:id="@+id/mi_settings"
+                android:icon="@drawable/ic_settings"
+                android:title="Asetukset" />
+        </menu>
+    </item>
 </menu>

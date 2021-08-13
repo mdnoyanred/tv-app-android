@@ -74,7 +74,7 @@ public class Details extends AppCompatActivity {
 
                     ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
                     params.width = params.MATCH_PARENT;
-                    params.height = (int) (200 * getResources().getDisplayMetrics().density);
+                    params.height = (int) (250 * getResources().getDisplayMetrics().density);
                     playerView.setLayoutParams(params);
 
                     isFullScreen = false;

@@ -12,20 +12,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TVApp">
         <activity
+            android:name=".ui.activities.Settings"
+            android:configChanges="orientation|screenSize|layoutDirection"
+            android:label="@string/title_activity_settings"
+            android:theme="@style/Theme.TVApp"
+            android:exported="true" />
+        <activity
+            android:screenOrientation="portrait"
             android:name=".ui.activities.Login"
             android:exported="true" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.activities.CategoryDetails"
             android:exported="true" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.activities.Categories"
             android:configChanges="screenSize|orientation|layoutDirection"
             android:exported="true" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.activities.Details"
             android:configChanges="screenSize|layoutDirection|orientation|keyboardHidden"
             android:exported="true" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.activities.SplashActivity"
             android:configChanges="screenSize|layoutDirection|orientation"
             android:exported="true"
@@ -38,6 +49,7 @@
         </activity>
         
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.activities.MainActivity"
             android:configChanges="screenSize|layoutDirection|orientation"
             android:exported="true"
@@ -48,6 +60,17 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:exported="true"
+            android:configChanges="orientation|screenSize|layoutDirection"
+            android:theme="@style/Theme.TVApp" />
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:exported="true"
+            android:configChanges="orientation|screenSize|layoutDirection"
+            android:theme="@style/Theme.TVApp" />
 
         <meta-data
             android:name="preloaded_fonts"
