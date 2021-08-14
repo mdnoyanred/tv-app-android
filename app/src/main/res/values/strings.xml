@@ -26,4 +26,7 @@
     <string name="terms_of_service" translatable="false">Käyttöehdot</string>
     <string name="privacy_policy" translatable="false">Tietosuojakäytäntö</string>
     <string name="privacy_policy_summary" translatable="false">Näytä tietosuojakäytäntö.</string>
+
+    <string name="copyright">Copyright</string>
+    <string name="example_summary_2">Tekijänoikeus tulee tähän.</string>
 </resources>

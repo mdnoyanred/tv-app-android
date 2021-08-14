@@ -47,6 +47,14 @@
             app:title="@string/privacy_policy"
             app:summary="@string/privacy_policy_summary" />
 
+        <Preference
+            app:defaultValue="false"
+            app:icon="@drawable/ic_copyright"
+            app:key="copyright"
+            app:selectable="false"
+            app:title="@string/copyright"
+            app:summary="@string/example_summary_2" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>

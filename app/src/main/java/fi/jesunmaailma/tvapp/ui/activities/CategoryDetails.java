@@ -96,6 +96,7 @@ public class CategoryDetails extends AppCompatActivity {
                         channel.setThumbnail(channelData.getString("thumbnail"));
                         channel.setFacebook(channelData.getString("facebook"));
                         channel.setTwitter(channelData.getString("twitter"));
+                        channel.setInstagram(channelData.getString("instagram"));
                         channel.setYoutube(channelData.getString("youtube"));
                         channel.setWebsite(channelData.getString("website"));
                         channel.setCategory(channelData.getString("category"));

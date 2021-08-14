@@ -3,10 +3,12 @@ package fi.jesunmaailma.tvapp.ui.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,7 +33,7 @@ import fi.jesunmaailma.tvapp.models.Channel;
 public class Details extends AppCompatActivity {
     public static final String TAG = "TAG";
     PlayerView playerView;
-    ImageView fbLink, twtLink, ytLink, webLink, playerLogo;
+    ImageView channelLogo, fbLink, twtLink, igLink, ytLink, webLink;
     TextView channelTitle, channelDesc, playerTitle, playerDesc;
     ImageView fullScreen;
     ProgressBar progressBar;
@@ -70,24 +72,20 @@ public class Details extends AppCompatActivity {
                         actionBar.show();
                     }
 
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
                     ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
                     params.width = params.MATCH_PARENT;
-                    params.height = (int) (250 * getResources().getDisplayMetrics().density);
+                    params.height = (int) (200 * getResources().getDisplayMetrics().density);
                     playerView.setLayoutParams(params);
 
                     isFullScreen = false;
                 } else {
                     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+                            | View.SYSTEM_UI_FLAG_LOW_PROFILE);
 
                     if (actionBar != null) {
                         actionBar.hide();
                     }
-
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
                     ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
                     params.width = params.MATCH_PARENT;
@@ -101,15 +99,15 @@ public class Details extends AppCompatActivity {
 
         fbLink = findViewById(R.id.facebookLink);
         twtLink = findViewById(R.id.twitterLink);
+        igLink = findViewById(R.id.instagramLink);
         ytLink = findViewById(R.id.youtubeLink);
         webLink = findViewById(R.id.websiteLink);
 
+        channelLogo = findViewById(R.id.channelLogo);
         channelTitle = findViewById(R.id.channelTitle);
         channelDesc = findViewById(R.id.channelDesc);
 
-        playerLogo = playerView.findViewById(R.id.playerLogo);
-
-        Picasso.get().load(channel.getThumbnail()).into(playerLogo);
+        Picasso.get().load(channel.getThumbnail()).into(channelLogo);
 
         playerTitle = playerView.findViewById(R.id.playerName);
         playerDesc = playerView.findViewById(R.id.playerDesc);
@@ -134,6 +132,13 @@ public class Details extends AppCompatActivity {
             }
         });
 
+        igLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLink(channel.getInstagram());
+            }
+        });
+
         ytLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,8 +158,14 @@ public class Details extends AppCompatActivity {
     }
 
     public void openLink(String url) {
-        Intent open = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        startActivity(open);
+        int color_toolbar = Color.BLACK;
+
+        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+        builder.setShowTitle(true);
+        builder.setToolbarColor(color_toolbar);
+
+        CustomTabsIntent intent = builder.build();
+        intent.launchUrl(Details.this, Uri.parse(url));
     }
 
     @Override

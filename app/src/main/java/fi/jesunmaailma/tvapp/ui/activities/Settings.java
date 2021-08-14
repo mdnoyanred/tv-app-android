@@ -128,6 +128,16 @@ public class Settings extends AppCompatActivity {
                     }
                 });
             }
+
+            Preference pref_copyright = findPreference("copyright");
+            if (pref_copyright != null) {
+                pref_copyright.setSummary(
+                        String.format(
+                                "%s",
+                                "© 2021 Jesun Maailma"
+                        )
+                );
+            }
         }
     }
 }

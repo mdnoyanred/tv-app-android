@@ -12,6 +12,7 @@ public class Channel implements Serializable {
     private String liveUrl;
     private String facebook;
     private String twitter;
+    private String instagram;
     private String youtube;
     private String website;
     private String category;
@@ -70,6 +71,14 @@ public class Channel implements Serializable {
 
     public void setTwitter(String twitter) {
         this.twitter = twitter;
+    }
+
+    public String getInstagram() {
+        return instagram;
+    }
+
+    public void setInstagram(String instagram) {
+        this.instagram = instagram;
     }
 
     public String getYoutube() {

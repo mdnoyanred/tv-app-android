@@ -345,6 +345,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         channel.setThumbnail(channelData.getString("thumbnail"));
                         channel.setFacebook(channelData.getString("facebook"));
                         channel.setTwitter(channelData.getString("twitter"));
+                        channel.setInstagram(channelData.getString("instagram"));
                         channel.setYoutube(channelData.getString("youtube"));
                         channel.setWebsite(channelData.getString("website"));
                         channel.setCategory(channelData.getString("category"));
@@ -398,6 +399,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         channel.setThumbnail(channelData.getString("thumbnail"));
                         channel.setFacebook(channelData.getString("facebook"));
                         channel.setTwitter(channelData.getString("twitter"));
+                        channel.setInstagram(channelData.getString("instagram"));
                         channel.setYoutube(channelData.getString("youtube"));
                         channel.setWebsite(channelData.getString("website"));
                         channel.setCategory(channelData.getString("category"));
@@ -451,6 +453,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         channel.setThumbnail(channelData.getString("thumbnail"));
                         channel.setFacebook(channelData.getString("facebook"));
                         channel.setTwitter(channelData.getString("twitter"));
+                        channel.setInstagram(channelData.getString("instagram"));
                         channel.setYoutube(channelData.getString("youtube"));
                         channel.setWebsite(channelData.getString("website"));
                         channel.setCategory(channelData.getString("category"));
@@ -504,6 +507,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         channel.setThumbnail(channelData.getString("thumbnail"));
                         channel.setFacebook(channelData.getString("facebook"));
                         channel.setTwitter(channelData.getString("twitter"));
+                        channel.setInstagram(channelData.getString("instagram"));
                         channel.setYoutube(channelData.getString("youtube"));
                         channel.setWebsite(channelData.getString("website"));
                         channel.setCategory(channelData.getString("category"));
