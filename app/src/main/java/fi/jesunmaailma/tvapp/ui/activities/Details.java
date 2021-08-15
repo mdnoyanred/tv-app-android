@@ -1,11 +1,15 @@
 package fi.jesunmaailma.tvapp.ui.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
@@ -25,6 +29,11 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import fi.jesunmaailma.tvapp.R;
@@ -32,12 +41,20 @@ import fi.jesunmaailma.tvapp.models.Channel;
 
 public class Details extends AppCompatActivity {
     public static final String TAG = "TAG";
+    public static final String id = "id";
+    public static final String name = "name";
+    public static final String image = "image";
+
     PlayerView playerView;
     ImageView channelLogo, fbLink, twtLink, igLink, ytLink, webLink;
     TextView channelTitle, channelDesc, playerTitle, playerDesc;
-    ImageView fullScreen;
+    ImageView fullScreenEnter, fullScreenExit;
     ProgressBar progressBar;
     boolean isFullScreen = false;
+
+    FirebaseAuth auth;
+    FirebaseUser user;
+    FirebaseAnalytics analytics;
 
     SimpleExoPlayer player;
 
@@ -57,28 +74,31 @@ public class Details extends AppCompatActivity {
         actionBar.setTitle(channel.getName());
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+
+        analytics = FirebaseAnalytics.getInstance(this);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, image);
+        analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
         playerView = findViewById(R.id.playerView);
-        fullScreen = playerView.findViewById(R.id.exo_fullscreen_icon);
+        fullScreenEnter = playerView.findViewById(R.id.exo_fullscreen_icon);
+        fullScreenExit = playerView.findViewById(R.id.exo_fullscreen_exit);
 
         progressBar = findViewById(R.id.progressBar);
 
-        fullScreen.setOnClickListener(new View.OnClickListener() {
+        fullScreenEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isFullScreen) {
-                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+                if (!isFullScreen) {
 
-                    if (actionBar != null) {
-                        actionBar.show();
-                    }
+                    fullScreenEnter.setVisibility(View.GONE);
+                    fullScreenExit.setVisibility(View.VISIBLE);
 
-                    ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
-                    params.width = params.MATCH_PARENT;
-                    params.height = (int) (200 * getResources().getDisplayMetrics().density);
-                    playerView.setLayoutParams(params);
-
-                    isFullScreen = false;
-                } else {
                     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                             | View.SYSTEM_UI_FLAG_LOW_PROFILE);
@@ -93,6 +113,30 @@ public class Details extends AppCompatActivity {
                     playerView.setLayoutParams(params);
 
                     isFullScreen = true;
+                }
+            }
+        });
+
+        fullScreenExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isFullScreen) {
+
+                    fullScreenExit.setVisibility(View.GONE);
+                    fullScreenEnter.setVisibility(View.VISIBLE);
+
+                    getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+
+                    if (actionBar != null) {
+                        actionBar.show();
+                    }
+
+                    ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
+                    params.width = params.MATCH_PARENT;
+                    params.height = (int) (200 * getResources().getDisplayMetrics().density);
+                    playerView.setLayoutParams(params);
+
+                    isFullScreen = false;
                 }
             }
         });
@@ -153,8 +197,52 @@ public class Details extends AppCompatActivity {
             }
         });
 
-        playChannel(channel.getLiveUrl());
+        if (user != null) {
+            playChannel(channel.getLiveUrl());
+        } else {
+            showAlertDialog(
+                    Details.this,
+                    "Kirjautuminen vaaditaan!",
+                    String.format(
+                            "%s\n\n%s",
+                            "Kirjautuminen vaaditaan, jotta voit katsoa netti-tv:tä.",
+                            "Kirjaudu sisään painamalla alla olevaa \"Kirjaudu\"-painiketta."
+                    )
+            );
+        }
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            startActivity(new Intent(getApplicationContext(), MainActivity.class)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+            finish();
+            overridePendingTransition(0, 0);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public void showAlertDialog(Activity activity, String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setCancelable(false);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setNegativeButton("Peruuta", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                finish();
+            }
+        });
+        builder.setPositiveButton("Kirjaudu", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivityForResult(new Intent(getApplicationContext(), Login.class), 100);
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     public void openLink(String url) {
@@ -206,20 +294,42 @@ public class Details extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        player.setPlayWhenReady(false);
+        if (user != null) {
+            player.setPlayWhenReady(false);
+        }
         super.onPause();
     }
 
     @Override
     protected void onResume() {
-        player.seekToDefaultPosition();
-        player.setPlayWhenReady(true);
+        if (user != null) {
+            player.seekToDefaultPosition();
+            player.setPlayWhenReady(true);
+        }
         super.onResume();
     }
 
     @Override
     protected void onDestroy() {
-        player.release();
+        if (user != null) {
+            player.release();
+        }
         super.onDestroy();
+    }
+
+    @Override
+    protected void onStart() {
+        if (user == null) {
+            showAlertDialog(
+                    Details.this,
+                    "Kirjautuminen vaaditaan!",
+                    String.format(
+                            "%s\n\n%s",
+                            "Kirjautuminen vaaditaan, jotta voit katsoa netti-tv:tä.",
+                            "Kirjaudu sisään painamalla alla olevaa \"Kirjaudu\"-painiketta."
+                    )
+            );
+        }
+        super.onStart();
     }
 }

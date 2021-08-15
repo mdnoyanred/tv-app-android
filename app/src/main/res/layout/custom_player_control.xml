@@ -47,18 +47,22 @@
 
         <ImageButton
             android:id="@id/exo_rew"
+            android:foreground="?attr/selectableItemBackground"
             style="@style/ExoMediaButton.Rewind" />
 
         <ImageButton
             android:id="@id/exo_play"
+            android:foreground="?attr/selectableItemBackground"
             style="@style/ExoMediaButton.Play" />
 
         <ImageButton
             android:id="@id/exo_pause"
+            android:foreground="?attr/selectableItemBackground"
             style="@style/ExoMediaButton.Pause" />
 
         <ImageButton
             android:id="@id/exo_ffwd"
+            android:foreground="?attr/selectableItemBackground"
             style="@style/ExoMediaButton.FastForward" />
     </LinearLayout>
 
@@ -108,12 +112,24 @@
 
             <ImageView
                 android:id="@+id/exo_fullscreen_icon"
+                android:foreground="?attr/selectableItemBackground"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 android:src="@drawable/exo_controls_fullscreen_enter" />
+
+            <ImageView
+                android:id="@+id/exo_fullscreen_exit"
+                android:foreground="?attr/selectableItemBackground"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+                android:src="@drawable/exo_controls_fullscreen_exit" />
         </FrameLayout>
     </LinearLayout>
 

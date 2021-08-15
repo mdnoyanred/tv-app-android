@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -24,10 +26,16 @@ import fi.jesunmaailma.tvapp.services.ChannelDataService;
 
 public class Categories extends AppCompatActivity {
     public static final String TAG = "TAG";
+    public static final String id = "id";
+    public static final String name = "name";
+    public static final String image = "image";
+
     RecyclerView categoriesList;
     List<Category> categories;
     CategoryAdapter adapter;
     SwipeRefreshLayout swipeRefreshLayout;
+
+    FirebaseAnalytics analytics;
 
     ChannelDataService service;
 
@@ -46,6 +54,14 @@ public class Categories extends AppCompatActivity {
         }
 
         service = new ChannelDataService(this);
+
+        analytics = FirebaseAnalytics.getInstance(this);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, image);
+        analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
         categoriesList = findViewById(R.id.categories_list);
         categories = new ArrayList<>();

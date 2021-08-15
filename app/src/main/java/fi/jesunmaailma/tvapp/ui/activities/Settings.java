@@ -18,11 +18,18 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import fi.jesunmaailma.tvapp.BuildConfig;
 import fi.jesunmaailma.tvapp.R;
 
 public class Settings extends AppCompatActivity {
+
+    public static final String id = "id";
+    public static final String name = "name";
+    public static final String image = "image";
+
+    FirebaseAnalytics analytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +46,14 @@ public class Settings extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        analytics = FirebaseAnalytics.getInstance(this);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, image);
+        analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
     @Override

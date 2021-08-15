@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -47,6 +48,10 @@ import fi.jesunmaailma.tvapp.services.ChannelDataService;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     public static final String TAG = "TAG";
+    public static final String id = "id";
+    public static final String name = "name";
+    public static final String image = "image";
+
     RecyclerView bigSliderList, newsChannelList, sportsChannelList, enterChannelList;
     ChannelAdapter bigSliderAdapter, newsChannelAdapter, sportsChannelAdapter, enterChannelAdapter;
     List<Channel> channelList, newsChannels, sportsChannel, enterChannel;
@@ -63,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     FirebaseAuth auth;
     FirebaseUser user;
+    FirebaseAnalytics analytics;
 
     GoogleSignInClient client;
 
@@ -106,6 +112,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
+
+        analytics = FirebaseAnalytics.getInstance(this);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, image);
+        analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
         client = GoogleSignIn.getClient(MainActivity.this, GoogleSignInOptions.DEFAULT_SIGN_IN);
 
@@ -270,8 +284,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 client.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        startActivity(new Intent(getApplicationContext()
-                                , MainActivity.class));
+                        startActivityForResult(new Intent(getApplicationContext()
+                                , MainActivity.class), 100);
                         finish();
                         overridePendingTransition(0, 0);
                     }
