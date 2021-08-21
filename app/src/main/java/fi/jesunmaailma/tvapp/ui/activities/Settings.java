@@ -99,7 +99,7 @@ public class Settings extends AppCompatActivity {
 
             Preference pref_info = findPreference("info");
             if (pref_info != null) {
-                pref_info.setSummary(String.format("%s %s (%s)", "Versio", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
+                pref_info.setSummary(String.format("%s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
             }
 
             Preference pref_tos = findPreference("terms_of_service");

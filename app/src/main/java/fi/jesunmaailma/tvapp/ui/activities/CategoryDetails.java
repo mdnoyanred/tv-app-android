@@ -3,14 +3,20 @@ package fi.jesunmaailma.tvapp.ui.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONException;
@@ -31,12 +37,16 @@ public class CategoryDetails extends AppCompatActivity {
     public static final String name = "name";
     public static final String image = "image";
 
+    CoordinatorLayout clRoot;
+
     RecyclerView categoryDetailsList;
     ChannelAdapter channelAdapter;
     List<Channel> channelList;
     ChannelDataService channelService;
 
     SwipeRefreshLayout swipeRefreshLayout;
+
+    CardView errorContainer;
 
     FirebaseAnalytics analytics;
 
@@ -58,7 +68,11 @@ public class CategoryDetails extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        clRoot = findViewById(R.id.clRoot);
+
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
+
+        errorContainer = findViewById(R.id.error_container);
 
         analytics = FirebaseAnalytics.getInstance(this);
 
@@ -82,6 +96,9 @@ public class CategoryDetails extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 getDetails();
+
+                categoryDetailsList.setVisibility(View.GONE);
+                errorContainer.setVisibility(View.GONE);
             }
         });
 
@@ -95,6 +112,7 @@ public class CategoryDetails extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 swipeRefreshLayout.setRefreshing(false);
+                categoryDetailsList.setVisibility(View.VISIBLE);
 
                 channelList.clear();
 
@@ -102,6 +120,8 @@ public class CategoryDetails extends AppCompatActivity {
 
                     try {
                         JSONObject channelData = response.getJSONObject(String.valueOf(i));
+
+                        errorContainer.setVisibility(View.GONE);
 
                         Channel channel = new Channel();
 
@@ -128,7 +148,30 @@ public class CategoryDetails extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
-                Log.d(TAG, "onErrorResponse: " + error);
+                swipeRefreshLayout.setRefreshing(false);
+
+                errorContainer.setVisibility(View.VISIBLE);
+
+                Snackbar snackbar = Snackbar.make(clRoot
+                        , ""
+                        , Snackbar.LENGTH_LONG);
+
+                View snackBarView = getLayoutInflater().inflate(R.layout.layout_snackbar_error, null);
+
+                snackbar.getView().setBackgroundColor(Color.TRANSPARENT);
+
+                Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+
+                snackbarLayout.setPadding(0, 0, 0, 0);
+
+                TextView tvError = snackBarView.findViewById(R.id.tv_error);
+
+                tvError.setText(error);
+
+                snackbarLayout.addView(snackBarView, 0);
+
+                snackbar.setDuration(5000);
+                snackbar.show();
             }
         });
     }

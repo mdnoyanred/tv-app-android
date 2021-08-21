@@ -40,7 +40,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         holder.categoryName.setText(category.getName());
 
-        Picasso.get().load(category.getImageUrl()).into(holder.categoryImage);
+        Picasso.get()
+                .load(category.getImageUrl())
+                .placeholder(R.drawable.tvapp_logo_placeholder)
+                .into(holder.categoryImage);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

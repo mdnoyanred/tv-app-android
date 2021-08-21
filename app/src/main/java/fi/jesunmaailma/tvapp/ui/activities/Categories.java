@@ -3,14 +3,20 @@ package fi.jesunmaailma.tvapp.ui.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONException;
@@ -30,10 +36,14 @@ public class Categories extends AppCompatActivity {
     public static final String name = "name";
     public static final String image = "image";
 
+    CoordinatorLayout clRoot;
+
     RecyclerView categoriesList;
     List<Category> categories;
     CategoryAdapter adapter;
     SwipeRefreshLayout swipeRefreshLayout;
+
+    CardView errorContainer;
 
     FirebaseAnalytics analytics;
 
@@ -52,6 +62,10 @@ public class Categories extends AppCompatActivity {
             actionBar.setTitle("Kaikki kategoriat");
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        clRoot = findViewById(R.id.clRoot);
+
+        errorContainer = findViewById(R.id.error_container);
 
         service = new ChannelDataService(this);
 
@@ -78,6 +92,9 @@ public class Categories extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 getCategoryData("https://jesunmaailma.ml/cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&categories=all&user_id=1");
+
+                errorContainer.setVisibility(View.GONE);
+                categoriesList.setVisibility(View.GONE);
             }
         });
 
@@ -89,6 +106,7 @@ public class Categories extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 swipeRefreshLayout.setRefreshing(false);
+                categoriesList.setVisibility(View.VISIBLE);
 
                 categories.clear();
 
@@ -116,7 +134,31 @@ public class Categories extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
-                Log.d(TAG, "onError: " + error);
+                swipeRefreshLayout.setRefreshing(false);
+
+                errorContainer.setVisibility(View.VISIBLE);
+                categoriesList.setVisibility(View.GONE);
+
+                Snackbar snackbar = Snackbar.make(clRoot
+                        , ""
+                        , Snackbar.LENGTH_LONG);
+
+                View snackBarView = getLayoutInflater().inflate(R.layout.layout_snackbar_error, null);
+
+                snackbar.getView().setBackgroundColor(Color.TRANSPARENT);
+
+                Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+
+                snackbarLayout.setPadding(0, 0, 0, 0);
+
+                TextView tvError = snackBarView.findViewById(R.id.tv_error);
+
+                tvError.setText(error);
+
+                snackbarLayout.addView(snackBarView, 0);
+
+                snackbar.setDuration(5000);
+                snackbar.show();
             }
         });
     }

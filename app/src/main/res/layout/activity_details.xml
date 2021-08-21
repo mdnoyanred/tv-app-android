@@ -11,6 +11,7 @@
         android:id="@+id/playerView"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:background="@color/black"
         app:controller_layout_id="@layout/custom_player_control"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

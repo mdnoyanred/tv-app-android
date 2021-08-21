@@ -26,7 +26,7 @@
             app:icon="@drawable/ic_info"
             app:key="info"
             app:selectable="false"
-            app:title="Sovelluksen versio"
+            app:title="@string/version_title"
             app:summary="@string/example_summary" />
 
     </PreferenceCategory>

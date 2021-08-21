@@ -101,11 +101,13 @@ public class Details extends AppCompatActivity {
 
                     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                            | View.SYSTEM_UI_FLAG_LOW_PROFILE);
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
                     if (actionBar != null) {
                         actionBar.hide();
                     }
+
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
                     ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
                     params.width = params.MATCH_PARENT;
@@ -131,6 +133,8 @@ public class Details extends AppCompatActivity {
                         actionBar.show();
                     }
 
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
                     ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) playerView.getLayoutParams();
                     params.width = params.MATCH_PARENT;
                     params.height = (int) (200 * getResources().getDisplayMetrics().density);
@@ -151,7 +155,10 @@ public class Details extends AppCompatActivity {
         channelTitle = findViewById(R.id.channelTitle);
         channelDesc = findViewById(R.id.channelDesc);
 
-        Picasso.get().load(channel.getThumbnail()).into(channelLogo);
+        Picasso.get()
+                .load(channel.getThumbnail())
+                .placeholder(R.drawable.tvapp_logo_placeholder)
+                .into(channelLogo);
 
         playerTitle = playerView.findViewById(R.id.playerName);
         playerDesc = playerView.findViewById(R.id.playerDesc);

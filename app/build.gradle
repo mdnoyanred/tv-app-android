@@ -12,8 +12,8 @@ android {
         applicationId "fi.jesunmaailma.tvapp"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 10021
-        versionName "1.2.1"
+        versionCode 10022
+        versionName "1.2.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -38,7 +38,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
 
     // Exoplayer library for playing live tv
-    implementation 'com.google.android.exoplayer:exoplayer:2.14.2'
+    implementation 'com.google.android.exoplayer:exoplayer:2.15.0'
 
     // Firebase libraries
     implementation 'com.google.firebase:firebase-auth:21.0.1'

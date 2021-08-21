@@ -2,7 +2,6 @@
     <string name="app_name">TV App</string>
     <string name="open">open</string>
     <string name="close">close</string>
-    <string name="log_in_text">Sisäänkirjautuminen kannattaa, koska silloin saat lisää etuoikeuksia.<br /><br />Kirjaudu sisään tänään!<br /> <br/>Tähän sovellukseen kirjaudutaan Jesun Maailma -tilillä.</string>
 
     <!-- Preference Titles -->
     <string name="theme_title" translatable="false">Sovelluksen teema</string>
@@ -18,7 +17,7 @@
     <string name="general_header" translatable="false">Yleiset</string>
     <string name="other_header" translatable="false">Muut</string>
     <string name="app_info_header" translatable="false">Tietoa sovelluksesta</string>
-    <string name="version_title" translatable="false">Sovelluksen versio</string>
+    <string name="version_title" translatable="false">Versio</string>
     <string name="example_summary" translatable="false">Versio tulee tähän.</string>
 
     <string name="legal_information" translatable="false">Juridiset tiedot</string>

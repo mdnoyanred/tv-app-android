@@ -52,6 +52,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.ViewHold
 
         Picasso.get()
                 .load(channel.getThumbnail())
+                .placeholder(R.drawable.tvapp_logo_placeholder)
                 .into(holder.channelThumbnail);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -6,6 +6,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -52,15 +53,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String name = "name";
     public static final String image = "image";
 
-    RecyclerView bigSliderList, newsChannelList, sportsChannelList, enterChannelList;
-    ChannelAdapter bigSliderAdapter, newsChannelAdapter, sportsChannelAdapter, enterChannelAdapter;
-    List<Channel> channelList, newsChannels, sportsChannel, enterChannel;
+    RecyclerView bigSliderList, newsChannelList, enterChannelList;
+    ChannelAdapter bigSliderAdapter, newsChannelAdapter, enterChannelAdapter;
+    List<Channel> channelList, newsChannels, enterChannel;
 
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     ActionBarDrawerToggle toggle;
     Toolbar toolbar;
     SwipeRefreshLayout swipeRefreshLayout;
+
+    CardView newsChannelContainer, enterChannelContainer, errorContainer;
+    TextView tvError;
 
     ProgressBar pbLoading;
 
@@ -92,6 +96,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         clRoot = findViewById(R.id.clRoot);
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
+
+        newsChannelContainer = findViewById(R.id.news_channel_container);
+        enterChannelContainer = findViewById(R.id.enter_channel_container);
+        errorContainer = findViewById(R.id.error_container);
+
+        tvError = findViewById(R.id.tv_error);
 
         pbLoading = findViewById(R.id.pbLoading);
 
@@ -133,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         getSliderData("https://jesunmaailma.ml/cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&channels=all&user_id=1");
         getNewsChannels("https://jesunmaailma.ml/cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=Uutiset&user_id=1");
-        getSportsChannel("https://jesunmaailma.ml/cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=Urheilu&user_id=1");
         getEntertainmentChannel("https://jesunmaailma.ml/cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=Viihde&user_id=1");
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -141,16 +150,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onRefresh() {
                 pbLoading.setVisibility(View.VISIBLE);
                 swipeRefreshLayout.setRefreshing(false);
+                errorContainer.setVisibility(View.GONE);
 
                 bigSliderList.setVisibility(View.GONE);
                 getSliderData("https://jesunmaailma.ml/cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&channels=all&user_id=1");
 
+                newsChannelContainer.setVisibility(View.GONE);
                 newsChannelList.setVisibility(View.GONE);
                 getNewsChannels("https://jesunmaailma.ml/cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=Uutiset&user_id=1");
 
-                sportsChannelList.setVisibility(View.GONE);
-                getSportsChannel("https://jesunmaailma.ml/cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=Urheilu&user_id=1");
-
+                enterChannelContainer.setVisibility(View.GONE);
                 enterChannelList.setVisibility(View.GONE);
                 getEntertainmentChannel("https://jesunmaailma.ml/cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=Viihde&user_id=1");
             }
@@ -375,7 +384,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onError(String error) {
-                Log.d(TAG, "onErrorResponse: " + error);
+                errorContainer.setVisibility(View.VISIBLE);
+                pbLoading.setVisibility(View.GONE);
+
+                bigSliderList.setVisibility(View.GONE);
+
+                newsChannelContainer.setVisibility(View.GONE);
+                newsChannelList.setVisibility(View.GONE);
+
+                newsChannelContainer.setVisibility(View.GONE);
+                newsChannelList.setVisibility(View.GONE);
             }
         });
     }
@@ -395,6 +413,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onResponse(JSONObject response) {
 
                 pbLoading.setVisibility(View.GONE);
+                newsChannelContainer.setVisibility(View.VISIBLE);
                 newsChannelList.setVisibility(View.VISIBLE);
 
                 newsChannels.clear();
@@ -429,61 +448,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onError(String error) {
-                Log.d(TAG, "onErrorResponse: " + error);
-            }
-        });
-    }
-
-    public void getSportsChannel(String url) {
-        sportsChannelList = findViewById(R.id.sports_channel_list);
-        sportsChannel = new ArrayList<>();
-
-        LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        sportsChannelList.setLayoutManager(manager);
-
-        sportsChannelAdapter = new ChannelAdapter(sportsChannel, "category");
-        sportsChannelList.setAdapter(sportsChannelAdapter);
-
-        service.getChannelData(url, new ChannelDataService.OnDataResponse() {
-            @Override
-            public void onResponse(JSONObject response) {
-
+                errorContainer.setVisibility(View.VISIBLE);
                 pbLoading.setVisibility(View.GONE);
-                sportsChannelList.setVisibility(View.VISIBLE);
 
-                sportsChannel.clear();
+                bigSliderList.setVisibility(View.GONE);
 
-                for (int i = 0; i < response.length(); i++) {
+                newsChannelContainer.setVisibility(View.GONE);
+                newsChannelList.setVisibility(View.GONE);
 
-                    try {
-                        JSONObject channelData = response.getJSONObject(String.valueOf(i));
-
-                        Channel channel = new Channel();
-
-                        channel.setId(channelData.getInt("id"));
-                        channel.setName(channelData.getString("name"));
-                        channel.setDescription(channelData.getString("description"));
-                        channel.setLiveUrl(channelData.getString("live_url"));
-                        channel.setThumbnail(channelData.getString("thumbnail"));
-                        channel.setFacebook(channelData.getString("facebook"));
-                        channel.setTwitter(channelData.getString("twitter"));
-                        channel.setInstagram(channelData.getString("instagram"));
-                        channel.setYoutube(channelData.getString("youtube"));
-                        channel.setWebsite(channelData.getString("website"));
-                        channel.setCategory(channelData.getString("category"));
-
-                        sportsChannel.add(channel);
-                        sportsChannelAdapter.notifyDataSetChanged();
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            @Override
-            public void onError(String error) {
-                Log.d(TAG, "onErrorResponse: " + error);
+                newsChannelContainer.setVisibility(View.GONE);
+                newsChannelList.setVisibility(View.GONE);
             }
         });
     }
@@ -503,6 +477,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onResponse(JSONObject response) {
 
                 pbLoading.setVisibility(View.GONE);
+                enterChannelContainer.setVisibility(View.VISIBLE);
                 enterChannelList.setVisibility(View.VISIBLE);
 
                 enterChannel.clear();
@@ -537,7 +512,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onError(String error) {
-                Log.d(TAG, "onErrorResponse: " + error);
+                errorContainer.setVisibility(View.VISIBLE);
+                pbLoading.setVisibility(View.GONE);
+
+                bigSliderList.setVisibility(View.GONE);
+
+                newsChannelContainer.setVisibility(View.GONE);
+                newsChannelList.setVisibility(View.GONE);
+
+                newsChannelContainer.setVisibility(View.GONE);
+                newsChannelList.setVisibility(View.GONE);
             }
         });
     }
