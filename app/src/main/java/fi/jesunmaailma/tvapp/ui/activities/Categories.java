@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -99,14 +100,14 @@ public class Categories extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getCategoryData("https://jesunmaailma.ml/cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&categories=all&user_id=1");
+                getCategoryData("https://jesunmaailma.ml/livetv-cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&categories=all&user_id=1");
 
                 errorContainer.setVisibility(View.GONE);
                 categoriesList.setVisibility(View.GONE);
             }
         });
 
-        getCategoryData("https://jesunmaailma.ml/cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&categories=all&user_id=1");
+        getCategoryData("https://jesunmaailma.ml/livetv-cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&categories=all&user_id=1");
     }
 
     public void getCategoryData(String url) {

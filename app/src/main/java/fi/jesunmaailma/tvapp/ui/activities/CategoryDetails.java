@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -114,7 +115,7 @@ public class CategoryDetails extends AppCompatActivity {
     }
 
     public void getDetails() {
-        String url = "https://jesunmaailma.ml/cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=" + category.getName() + "&user_id=1";
+        String url = "https://jesunmaailma.ml/livetv-cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=" + category.getName() + "&user_id=1";
 
         channelService.getChannelData(url, new ChannelDataService.OnDataResponse() {
             @Override

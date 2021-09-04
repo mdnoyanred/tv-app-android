@@ -9,6 +9,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthCredential;
@@ -149,9 +151,29 @@ public class Login extends AppCompatActivity {
             } else {
                 Snackbar snackbar = Snackbar.make(
                         clRoot,
-                        "Käyttäjä keskeytti kirjautumisen.",
+                        "",
                         Snackbar.LENGTH_LONG
                 );
+
+                View snackBarView = getLayoutInflater().inflate(R.layout.layout_snackbar_error, null);
+
+                snackbar.getView().setBackgroundColor(Color.TRANSPARENT);
+
+                Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+
+                snackbarLayout.setPadding(0, 0, 0, 0);
+
+                TextView tvError = snackBarView.findViewById(R.id.tv_error);
+
+                tvError.setText(
+                        String.format(
+                                "%s",
+                                "Käyttäjä keskeytti kirjautumisen."
+                        )
+                );
+
+                snackbarLayout.addView(snackBarView, 0);
+
                 snackbar.setDuration(5000);
                 snackbar.show();
             }

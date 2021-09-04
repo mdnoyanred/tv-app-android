@@ -32,6 +32,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
@@ -149,9 +150,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         pbLoading.setVisibility(View.VISIBLE);
 
-        getSliderData("https://jesunmaailma.ml/cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&channels=all&user_id=1");
-        getNewsChannels("https://jesunmaailma.ml/cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=Uutiset&user_id=1");
-        getEntertainmentChannel("https://jesunmaailma.ml/cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=Viihde&user_id=1");
+        getSliderData("https://jesunmaailma.ml/livetv-cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&channels=all&user_id=1");
+        getNewsChannels("https://jesunmaailma.ml/livetv-cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=Uutiset&user_id=1");
+        getEntertainmentChannel("https://jesunmaailma.ml/livetv-cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=Viihde&user_id=1");
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -160,15 +161,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 errorContainer.setVisibility(View.GONE);
 
                 bigSliderList.setVisibility(View.GONE);
-                getSliderData("https://jesunmaailma.ml/cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&channels=all&user_id=1");
+                getSliderData("https://jesunmaailma.ml/livetv-cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&channels=all&user_id=1");
 
                 newsChannelContainer.setVisibility(View.GONE);
                 newsChannelList.setVisibility(View.GONE);
-                getNewsChannels("https://jesunmaailma.ml/cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=Uutiset&user_id=1");
+                getNewsChannels("https://jesunmaailma.ml/livetv-cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=Uutiset&user_id=1");
 
                 enterChannelContainer.setVisibility(View.GONE);
                 enterChannelList.setVisibility(View.GONE);
-                getEntertainmentChannel("https://jesunmaailma.ml/cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=Viihde&user_id=1");
+                getEntertainmentChannel("https://jesunmaailma.ml/livetv-cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=Viihde&user_id=1");
             }
         });
 
