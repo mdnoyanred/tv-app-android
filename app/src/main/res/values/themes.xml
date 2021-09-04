@@ -12,6 +12,12 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
+        <item name="container_background">#FFFFFF</item>
+        <item name="background_color">#252525</item>
+        <item name="snackbar_text_color">#FFFFFF</item>
+        <item name="text_color">#FFFFFF</item>
+        <item name="container_text_color">#000000</item>
     </style>
 
     <style name="Theme.TVApp.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -26,6 +32,12 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+
+        <item name="container_background">#FFFFFF</item>
+        <item name="background_color">#252525</item>
+        <item name="snackbar_text_color">#FFFFFF</item>
+        <item name="text_color">#FFFFFF</item>
+        <item name="container_text_color">#000000</item>
     </style>
 
     <style name="Theme.TVApp.SplashScreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">

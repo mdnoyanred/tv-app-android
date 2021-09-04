@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:text="Channel Name"
-        android:textColor="#534D4D"
+        android:textColor="?attr/container_text_color"
         android:textSize="20sp"
         android:fontFamily="@font/poppins"
         app:layout_constraintBottom_toBottomOf="parent"

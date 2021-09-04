@@ -53,7 +53,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_info_2" />
+                app:srcCompat="@drawable/ic_info_3" />
 
             <TextView
                 android:layout_width="wrap_content"

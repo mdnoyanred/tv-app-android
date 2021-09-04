@@ -34,6 +34,12 @@ public class Settings extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
+            setTheme(R.style.Theme_TVApp);
+        } else {
+            setTheme(R.style.Theme_TVApp);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
         if (savedInstanceState == null) {
@@ -68,6 +74,51 @@ public class Settings extends AppCompatActivity {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
+
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+            ListPreference lp_theme = findPreference("theme");
+            if (lp_theme != null) {
+                String theme = sp.getString("theme", "false");
+                if ("light_theme".equals(theme)) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    lp_theme.setSummary(lp_theme.getEntry());
+                } else if ("dark_theme".equals(theme)) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    lp_theme.setSummary(lp_theme.getEntry());
+                } else if ("system_default".equals(theme)) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                    lp_theme.setSummary(lp_theme.getEntry());
+                }
+
+                lp_theme.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object obj) {
+
+                        String items = (String) obj;
+                        if (preference.getKey().equals("theme")) {
+                            switch (items) {
+                                case "light_theme":
+                                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                                    break;
+                                case "dark_theme":
+                                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                                    break;
+                                case "system_default":
+                                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+                                    break;
+                            }
+
+                            ListPreference listPreferences = (ListPreference) preference;
+                            listPreferences.setSummary(listPreferences.getEntries()[listPreferences.findIndexOfValue(items)]);
+
+                        }
+
+                        return true;
+                    }
+                });
+
+            }
 
             Preference pref_open_source = findPreference("open_source");
             if (pref_open_source != null) {

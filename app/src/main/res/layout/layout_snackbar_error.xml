@@ -7,11 +7,11 @@
     tools:ignore="HardcodedText">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:elevation="4dp"
-        app:cardCornerRadius="8dp"
+        app:cardCornerRadius="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,7 +20,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/grey"
+            android:background="?attr/background_color"
             android:padding="12dp">
 
             <ImageView
@@ -39,8 +39,8 @@
                 android:layout_marginStart="12dp"
                 android:fontFamily="@font/poppins"
                 android:text="Tämä on virhe."
-                android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textAlignment="textStart"
+                android:textColor="?attr/snackbar_text_color"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView2"
                 app:layout_constraintEnd_toEndOf="parent"

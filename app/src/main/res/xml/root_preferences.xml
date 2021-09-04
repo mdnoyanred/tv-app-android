@@ -1,6 +1,18 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <PreferenceCategory app:title="@string/general_header">
+
+        <ListPreference
+            app:defaultValue="false"
+            app:entries="@array/theme_entries"
+            app:entryValues="@array/theme_values"
+            app:icon="@drawable/ic_theme"
+            app:key="theme"
+            app:title="@string/theme_title" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory app:title="@string/other_header">
 
         <Preference

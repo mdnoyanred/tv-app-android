@@ -62,6 +62,7 @@
                     android:id="@+id/news_channel_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    app:cardBackgroundColor="?attr/container_background"
                     app:cardCornerRadius="0dp"
                     app:cardElevation="0dp">
 
@@ -78,7 +79,7 @@
                             android:layout_marginBottom="8dp"
                             android:fontFamily="@font/poppins_bold"
                             android:text="Uutiskanavat"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/container_text_color"
                             android:textSize="20sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -99,6 +100,7 @@
                     android:id="@+id/enter_channel_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    app:cardBackgroundColor="?attr/container_background"
                     app:cardCornerRadius="0dp"
                     app:cardElevation="0dp">
 
@@ -115,7 +117,7 @@
                             android:layout_marginBottom="8dp"
                             android:fontFamily="@font/poppins_bold"
                             android:text="Viihdekanavat"
-                            android:textColor="@color/black"
+                            android:textColor="?attr/container_text_color"
                             android:textSize="20sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -146,7 +148,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:visibility="gone"
-            app:cardBackgroundColor="#111111"
+            app:cardBackgroundColor="?attr/background_color"
             app:cardCornerRadius="8dp"
             app:cardElevation="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -166,7 +168,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_info_2" />
+                    app:srcCompat="@drawable/ic_info_3" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -176,7 +178,7 @@
                     android:text="Hupsista keikkaa!\nSisältöä ei voitu ladata."
                     android:textAlignment="center"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
+                    android:textColor="?attr/text_color"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"

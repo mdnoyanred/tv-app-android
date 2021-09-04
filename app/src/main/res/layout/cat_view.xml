@@ -42,7 +42,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="Category Title"
-                android:textColor="#393232"
+                android:textColor="?attr/container_text_color"
                 android:textSize="18sp"
                 android:fontFamily="@font/poppins"
                 android:ellipsize="end"

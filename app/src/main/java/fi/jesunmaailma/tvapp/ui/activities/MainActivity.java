@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -80,6 +81,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
+            setTheme(R.style.Theme_TVApp_NoActionBar);
+        } else {
+            setTheme(R.style.Theme_TVApp_NoActionBar);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -149,7 +157,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onRefresh() {
                 pbLoading.setVisibility(View.VISIBLE);
-                swipeRefreshLayout.setRefreshing(false);
                 errorContainer.setVisibility(View.GONE);
 
                 bigSliderList.setVisibility(View.GONE);
@@ -349,6 +356,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onResponse(JSONObject response) {
 
+                swipeRefreshLayout.setRefreshing(false);
                 pbLoading.setVisibility(View.GONE);
                 bigSliderList.setVisibility(View.VISIBLE);
 
@@ -384,6 +392,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onError(String error) {
+                swipeRefreshLayout.setRefreshing(false);
                 errorContainer.setVisibility(View.VISIBLE);
                 pbLoading.setVisibility(View.GONE);
 
@@ -412,6 +421,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onResponse(JSONObject response) {
 
+                swipeRefreshLayout.setRefreshing(false);
                 pbLoading.setVisibility(View.GONE);
                 newsChannelContainer.setVisibility(View.VISIBLE);
                 newsChannelList.setVisibility(View.VISIBLE);
@@ -448,6 +458,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onError(String error) {
+                swipeRefreshLayout.setRefreshing(false);
                 errorContainer.setVisibility(View.VISIBLE);
                 pbLoading.setVisibility(View.GONE);
 
@@ -476,6 +487,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onResponse(JSONObject response) {
 
+                swipeRefreshLayout.setRefreshing(false);
                 pbLoading.setVisibility(View.GONE);
                 enterChannelContainer.setVisibility(View.VISIBLE);
                 enterChannelList.setVisibility(View.VISIBLE);
@@ -512,6 +524,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onError(String error) {
+                swipeRefreshLayout.setRefreshing(false);
                 errorContainer.setVisibility(View.VISIBLE);
                 pbLoading.setVisibility(View.GONE);
 
