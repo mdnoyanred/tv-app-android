@@ -6,7 +6,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -35,40 +34,41 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import fi.jesunmaailma.tvapp.R;
 
-public class Login extends AppCompatActivity {
-    public static final int GOOGLE_AUTH_CODE = 240;
-    public static final String id = "id";
-    public static final String name = "name";
-    public static final String image = "image";
+public class RegisterActivity extends AppCompatActivity {
+    public static final int GOOGLE_REQ_CODE = 100;
+
+    EditText firstNameEdit, lastNameEdit, emailEdit, passwordEdit;
+    MaterialButton registerBtn;
+    TextView btnReadMore, loginActivityBtn, btnForgotPassword;
 
     SignInButton btnSignInWithGoogle;
-    MaterialButton btnSignIn;
-    TextView btnReadMore, btnRegister, btnForgotPassword;
-
-    EditText emailEdit, passwordEdit;
 
     FirebaseAuth auth;
     FirebaseUser user;
+    FirebaseFirestore database;
+
     GoogleSignInClient client;
 
-    FirebaseAnalytics analytics;
+    MaterialAlertDialogBuilder builder;
+    LayoutInflater inflater;
 
     ProgressDialog progressDialog;
     ActionBar actionBar;
 
-    MaterialAlertDialogBuilder builder;
-    LayoutInflater inflater;
+    String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,16 +80,17 @@ public class Login extends AppCompatActivity {
         }
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
 
         btnReadMore = findViewById(R.id.btn_read_more);
-
         btnSignInWithGoogle = findViewById(R.id.btn_sign_in_with_google);
-        btnSignIn = findViewById(R.id.loginBtn);
-        btnRegister = findViewById(R.id.register_activity_txt);
+        registerBtn = findViewById(R.id.registerBtn);
+        loginActivityBtn = findViewById(R.id.login_activity_btn);
 
         btnForgotPassword = findViewById(R.id.forgotPasswordBtn);
 
+        firstNameEdit = findViewById(R.id.firstNameEdit);
+        lastNameEdit = findViewById(R.id.lastNameEdit);
         emailEdit = findViewById(R.id.emailEdit);
         passwordEdit = findViewById(R.id.passwordEdit);
 
@@ -100,48 +101,72 @@ public class Login extends AppCompatActivity {
 
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle("Kirjaudu sisään");
+            actionBar.setTitle("Rekisteröidy");
         }
 
-        progressDialog = new ProgressDialog(Login.this);
+        progressDialog = new ProgressDialog(RegisterActivity.this);
         progressDialog.setCancelable(false);
-        progressDialog.setMessage("Kirjaudutaan sisään...");
+        progressDialog.setMessage("Rekisteröidytään...");
 
-        GoogleSignInOptions options = new GoogleSignInOptions.Builder(
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        database = FirebaseFirestore.getInstance();
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(
                 GoogleSignInOptions.DEFAULT_SIGN_IN
         ).requestIdToken(getResources().getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
-        auth = FirebaseAuth.getInstance();
-        user = auth.getCurrentUser();
+        client = GoogleSignIn.getClient(RegisterActivity.this, gso);
 
-        analytics = FirebaseAnalytics.getInstance(this);
-
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
-        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, name);
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, image);
-        analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
-
+        firstNameEdit.addTextChangedListener(watcher);
+        lastNameEdit.addTextChangedListener(watcher);
         emailEdit.addTextChangedListener(watcher);
         passwordEdit.addTextChangedListener(watcher);
 
-        client = GoogleSignIn.getClient(Login.this, options);
+        btnReadMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String jesun_maailma_tili_url = "https://finnplace.ml/jesun-maailma-tili";
+
+                int color_toolbar = Color.parseColor("#37439F");
+
+                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                builder.setShowTitle(true);
+                builder.setToolbarColor(color_toolbar);
+
+                CustomTabsIntent intent = builder.build();
+                intent.launchUrl(RegisterActivity.this, Uri.parse(jesun_maailma_tili_url));
+            }
+        });
 
         btnSignInWithGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                registerBtn.setEnabled(false);
                 Intent intent = client.getSignInIntent();
-                startActivityForResult(intent, GOOGLE_AUTH_CODE);
+                startActivityForResult(intent, GOOGLE_REQ_CODE);
             }
         });
 
-        btnSignIn.setOnClickListener(new View.OnClickListener() {
+        registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String firstName = firstNameEdit.getText().toString();
+                String lastName = lastNameEdit.getText().toString();
                 String email = emailEdit.getText().toString();
                 String password = passwordEdit.getText().toString();
+
+                if (firstName.isEmpty()) {
+                    firstNameEdit.setError("Etunimi vaaditaan.");
+                    return;
+                }
+
+                if (lastName.isEmpty()) {
+                    lastNameEdit.setError("Sukunimi vaaditaan.");
+                    return;
+                }
 
                 if (email.isEmpty()) {
                     emailEdit.setError("Sähköposti vaaditaan.");
@@ -159,37 +184,38 @@ public class Login extends AppCompatActivity {
                 }
 
                 progressDialog.show();
-                btnSignIn.setEnabled(false);
+                registerBtn.setEnabled(false);
 
-                auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            progressDialog.dismiss();
-                            setResult(RESULT_OK);
-                            finish();
+                            uid = auth.getCurrentUser().getUid();
+                            DocumentReference documentReference = database.collection("Users").document(uid);
+
+                            Map<String, Object> userDetails = new HashMap<>();
+                            userDetails.put("firstName", firstName);
+                            userDetails.put("lastName", lastName);
+                            userDetails.put("email", email);
+                            documentReference.set(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        updateUI();
+                                    } else {
+                                        progressDialog.dismiss();
+                                        Toast.makeText(getApplicationContext(),
+                                                "Virhe! " + task.getException().getMessage(),
+                                                Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
                         } else {
-                            progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), "Virhe! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            progressDialog.dismiss();
                         }
                     }
                 });
-            }
-        });
-
-        btnReadMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String jesun_maailma_tili_url = "https://finnplace.ml/jesun-maailma-tili";
-
-                int color_toolbar = Color.parseColor("#37439F");
-
-                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-                builder.setShowTitle(true);
-                builder.setToolbarColor(color_toolbar);
-
-                CustomTabsIntent intent = builder.build();
-                intent.launchUrl(Login.this, Uri.parse(jesun_maailma_tili_url));
             }
         });
 
@@ -228,11 +254,10 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        btnRegister.setOnClickListener(new View.OnClickListener() {
+        loginActivityBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
-                startActivity(intent);
+                finish();
                 overridePendingTransition(0, 0);
             }
         });
@@ -246,31 +271,11 @@ public class Login extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private final TextWatcher watcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            String email = emailEdit.getText().toString();
-            String password = passwordEdit.getText().toString();
-
-            btnSignIn.setEnabled(!email.isEmpty() && !password.isEmpty());
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-        }
-    };
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == GOOGLE_AUTH_CODE) {
+        if (requestCode == GOOGLE_REQ_CODE) {
             Task<GoogleSignInAccount> task = GoogleSignIn
                     .getSignedInAccountFromIntent(data);
             if (task.isSuccessful()) {
@@ -285,15 +290,7 @@ public class Login extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    progressDialog.dismiss();
-                                    startActivity(new Intent(getApplicationContext(), MainActivity.class)
-                                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
-                                    finish();
-                                    overridePendingTransition(0, 0);
-                                } else {
-                                    Toast.makeText(getApplicationContext()
-                                            , "Virhe! " + task.getException()
-                                                    .getMessage(), Toast.LENGTH_LONG).show();
+                                    updateUI();
                                 }
                             }
                         });
@@ -305,5 +302,35 @@ public class Login extends AppCompatActivity {
                 progressDialog.dismiss();
             }
         }
+    }
+
+    private final TextWatcher watcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String firstName = firstNameEdit.getText().toString();
+            String lastName = lastNameEdit.getText().toString();
+            String email = emailEdit.getText().toString();
+            String password = passwordEdit.getText().toString();
+
+            registerBtn.setEnabled(!firstName.isEmpty() && !lastName.isEmpty() && !email.isEmpty() && !password.isEmpty());
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
+    public void updateUI() {
+        progressDialog.dismiss();
+        startActivity(new Intent(getApplicationContext(), MainActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+        finish();
+        overridePendingTransition(0, 0);
     }
 }

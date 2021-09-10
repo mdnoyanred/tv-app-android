@@ -25,6 +25,10 @@
             android:theme="@style/Theme.TVApp"
             android:exported="true" />
         <activity
+            android:name=".ui.activities.RegisterActivity"
+            android:configChanges="orientation|screenSize|layoutDirection"
+            android:theme="@style/Theme.TVApp" />
+        <activity
             android:name=".ui.activities.CategoryDetails"
             android:configChanges="orientation|screenSize|layoutDirection"
             android:theme="@style/Theme.TVApp"

@@ -20,7 +20,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -32,11 +31,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,7 +50,7 @@ import fi.jesunmaailma.tvapp.adapters.ChannelAdapter;
 import fi.jesunmaailma.tvapp.models.Channel;
 import fi.jesunmaailma.tvapp.services.ChannelDataService;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG = "TAG";
     public static final String id = "id";
     public static final String name = "name";
@@ -74,7 +75,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     FirebaseAuth auth;
     FirebaseUser user;
+    FirebaseFirestore database;
     FirebaseAnalytics analytics;
+    DocumentReference documentReference;
 
     GoogleSignInClient client;
 
@@ -128,9 +131,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
-        
+
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
+        database = FirebaseFirestore.getInstance();
 
         analytics = FirebaseAnalytics.getInstance(this);
 
@@ -174,6 +178,80 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         UpdateNavHeader();
+
+        if (user == null) {
+            Snackbar snackbar = Snackbar.make(clRoot
+                    , ""
+                    , Snackbar.LENGTH_LONG);
+
+            View snackBarView = getLayoutInflater().inflate(R.layout.layout_snackbar_logged_out, null);
+
+            snackbar.getView().setBackgroundColor(Color.TRANSPARENT);
+
+            Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+
+            snackbarLayout.setPadding(0, 0, 0, 0);
+
+            snackbarLayout.addView(snackBarView, 0);
+
+            snackbar.setDuration(5000);
+            snackbar.show();
+        } else {
+            documentReference = database.collection("Users").document(auth.getCurrentUser().getUid());
+            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    DocumentSnapshot snapshot = task.getResult();
+                    if (snapshot.exists()) {
+                        Snackbar snackbar = Snackbar.make(clRoot
+                                , ""
+                                , Snackbar.LENGTH_LONG);
+
+                        View snackBarView = getLayoutInflater().inflate(R.layout.layout_snackbar_logged_in, null);
+
+                        snackbar.getView().setBackgroundColor(Color.TRANSPARENT);
+
+                        Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+
+                        snackbarLayout.setPadding(0, 0, 0, 0);
+
+                        TextView tvGreeting = snackBarView.findViewById(R.id.tv_greeting);
+                        TextView tvEmail = snackBarView.findViewById(R.id.tv_email);
+
+                        tvGreeting.setText(String.format("Hei %s!", snapshot.getString("firstName")));
+                        tvEmail.setText(String.format("(%s)", snapshot.getString("email")));
+
+                        snackbarLayout.addView(snackBarView, 0);
+
+                        snackbar.setDuration(5000);
+                        snackbar.show();
+                    } else {
+                        Snackbar snackbar = Snackbar.make(clRoot
+                                , ""
+                                , Snackbar.LENGTH_LONG);
+
+                        View snackBarView = getLayoutInflater().inflate(R.layout.layout_snackbar_logged_in, null);
+
+                        snackbar.getView().setBackgroundColor(Color.TRANSPARENT);
+
+                        Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+
+                        snackbarLayout.setPadding(0, 0, 0, 0);
+
+                        TextView tvGreeting = snackBarView.findViewById(R.id.tv_greeting);
+                        TextView tvEmail = snackBarView.findViewById(R.id.tv_email);
+
+                        tvGreeting.setText(String.format("Hei %s!", user.getDisplayName()));
+                        tvEmail.setText(String.format("(%s)", user.getEmail()));
+
+                        snackbarLayout.addView(snackBarView, 0);
+
+                        snackbar.setDuration(5000);
+                        snackbar.show();
+                    }
+                }
+            });
+        }
     }
 
     public void UpdateNavHeader() {
@@ -190,8 +268,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             tvSignIn.setVisibility(View.GONE);
             tvSignOut.setVisibility(View.VISIBLE);
 
-            tvName.setText(user.getDisplayName());
-            tvEmail.setText(user.getEmail());
+            documentReference = database
+                    .collection("Users")
+                    .document(auth.getCurrentUser().getUid());
+
+            documentReference
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot snapshot = task.getResult();
+                            if (snapshot.exists()) {
+                                tvName.setText(
+                                        String.format(
+                                                "%s %s",
+                                                snapshot.getString("firstName"),
+                                                snapshot.getString("lastName")
+                                        )
+                                );
+                                tvEmail.setText(
+                                        String.format(
+                                                "%s",
+                                                snapshot.getString("email")
+                                        )
+                                );
+                            } else {
+                                tvName.setText(user.getDisplayName());
+                                tvEmail.setText(user.getEmail());
+                            }
+                        }
+                    });
         } else {
             tvName.setVisibility(View.GONE);
             tvEmail.setVisibility(View.GONE);
@@ -225,57 +331,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    protected void onStart() {
-        if (user == null) {
-            Snackbar snackbar = Snackbar.make(clRoot
-                    , ""
-                    , Snackbar.LENGTH_LONG);
-
-            View snackBarView = getLayoutInflater().inflate(R.layout.layout_snackbar_logged_out, null);
-
-            snackbar.getView().setBackgroundColor(Color.TRANSPARENT);
-
-            Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
-
-            snackbarLayout.setPadding(0, 0, 0, 0);
-
-            snackbarLayout.addView(snackBarView, 0);
-
-            snackbar.setDuration(5000);
-            snackbar.show();
-        } else {
-            Snackbar snackbar = Snackbar.make(clRoot
-                    , ""
-                    , Snackbar.LENGTH_LONG);
-
-            View snackBarView = getLayoutInflater().inflate(R.layout.layout_snackbar_logged_in, null);
-
-            snackbar.getView().setBackgroundColor(Color.TRANSPARENT);
-
-            Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
-
-            snackbarLayout.setPadding(0, 0, 0, 0);
-
-            TextView tvGreeting = snackBarView.findViewById(R.id.tv_greeting);
-            TextView tvEmail = snackBarView.findViewById(R.id.tv_email);
-
-            tvGreeting.setText(String.format("Hei %s!", user.getDisplayName()));
-            tvEmail.setText(String.format("(%s)", user.getEmail()));
-
-            snackbarLayout.addView(snackBarView, 0);
-
-            snackbar.setDuration(5000);
-            snackbar.show();
-        }
-        super.onStart();
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == 100 && resultCode == RESULT_OK) {
             closeDrawer(drawerLayout);
             startActivity(new Intent(getApplicationContext(), MainActivity.class)
-                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
             finish();
             overridePendingTransition(0, 0);
         }
@@ -283,34 +343,79 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void SignOutDialog(final Activity activity) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setCancelable(false);
-        builder.setTitle(user.getDisplayName());
-        builder.setMessage("Haluatko varmasti kirjautua ulos sovelluksesta?");
-        builder.setNegativeButton("Peruuta", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-        builder.setPositiveButton("Kirjaudu ulos", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                auth.signOut();
-
-                client.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+        documentReference
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        startActivityForResult(new Intent(getApplicationContext()
-                                , MainActivity.class), 100);
-                        finish();
-                        overridePendingTransition(0, 0);
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot snapshot = task.getResult();
+                        if (snapshot.exists()) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                            builder.setCancelable(false);
+                            builder.setTitle(
+                                    String.format(
+                                            "%s %s",
+                                            snapshot.getString("firstName"),
+                                            snapshot.getString("lastName")
+                                    )
+                            );
+                            builder.setMessage("Haluatko varmasti kirjautua ulos sovelluksesta?");
+                            builder.setNegativeButton("Peruuta", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            builder.setPositiveButton("Kirjaudu ulos", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    auth.signOut();
+
+                                    client.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            startActivityForResult(new Intent(getApplicationContext()
+                                                    , MainActivity.class), 100);
+                                            finish();
+                                            overridePendingTransition(0, 0);
+                                        }
+                                    });
+                                }
+                            });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                        } else {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                            builder.setCancelable(false);
+                            builder.setTitle(user.getDisplayName());
+                            builder.setMessage("Haluatko varmasti kirjautua ulos sovelluksesta?");
+                            builder.setNegativeButton("Peruuta", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            });
+                            builder.setPositiveButton("Kirjaudu ulos", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    auth.signOut();
+
+                                    client.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            startActivityForResult(new Intent(getApplicationContext()
+                                                    , MainActivity.class), 100);
+                                            finish();
+                                            overridePendingTransition(0, 0);
+                                        }
+                                    });
+                                }
+                            });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                        }
                     }
                 });
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     @Override

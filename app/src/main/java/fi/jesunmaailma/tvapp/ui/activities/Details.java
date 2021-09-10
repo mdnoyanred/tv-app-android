@@ -47,7 +47,7 @@ public class Details extends AppCompatActivity {
     public static final String image = "image";
 
     PlayerView playerView;
-    ImageView channelLogo, fbLink, twtLink, igLink, ytLink, webLink;
+    ImageView fbLink, twtLink, igLink, ytLink, webLink;
     TextView channelTitle, channelDesc, playerTitle, playerDesc;
     ImageView fullScreenEnter, fullScreenExit;
     ProgressBar progressBar;
@@ -159,14 +159,8 @@ public class Details extends AppCompatActivity {
         ytLink = findViewById(R.id.youtubeLink);
         webLink = findViewById(R.id.websiteLink);
 
-        channelLogo = findViewById(R.id.channelLogo);
         channelTitle = findViewById(R.id.channelTitle);
         channelDesc = findViewById(R.id.channelDesc);
-
-        Picasso.get()
-                .load(channel.getThumbnail())
-                .placeholder(R.drawable.tvapp_logo_placeholder)
-                .into(channelLogo);
 
         playerTitle = playerView.findViewById(R.id.playerName);
         playerDesc = playerView.findViewById(R.id.playerDesc);
@@ -330,21 +324,5 @@ public class Details extends AppCompatActivity {
             player.release();
         }
         super.onDestroy();
-    }
-
-    @Override
-    protected void onStart() {
-        if (user == null) {
-            showAlertDialog(
-                    Details.this,
-                    "Kirjautuminen vaaditaan!",
-                    String.format(
-                            "%s\n\n%s",
-                            "Kirjautuminen vaaditaan, jotta voit katsoa netti-tv:tä.",
-                            "Kirjaudu sisään painamalla alla olevaa \"Kirjaudu\"-painiketta."
-                    )
-            );
-        }
-        super.onStart();
     }
 }

@@ -10,4 +10,5 @@
     <color name="blue">#005eff</color>
     <color name="grey">#333333</color>
     <color name="background_color">#111111</color>
+    <color name="ripple_color">#8f0000ff</color>
 </resources>

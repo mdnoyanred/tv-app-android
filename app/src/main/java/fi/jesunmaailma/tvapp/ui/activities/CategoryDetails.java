@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -14,10 +14,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
@@ -95,7 +93,7 @@ public class CategoryDetails extends AppCompatActivity {
         channelList = new ArrayList<>();
         channelAdapter = new ChannelAdapter(channelList, "category_details");
 
-        GridLayoutManager manager = new GridLayoutManager(this, 2);
+        LinearLayoutManager manager = new LinearLayoutManager(this);
         categoryDetailsList.setLayoutManager(manager);
         categoryDetailsList.setAdapter(channelAdapter);
 
