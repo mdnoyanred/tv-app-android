@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             snackbar.setDuration(5000);
             snackbar.show();
         } else {
-            documentReference = database.collection("Users").document(auth.getCurrentUser().getUid());
+            documentReference = database.collection("Users").document(user.getUid());
             documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             documentReference = database
                     .collection("Users")
-                    .document(auth.getCurrentUser().getUid());
+                    .document(user.getUid());
 
             documentReference
                     .get()
@@ -311,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 closeDrawer(drawerLayout);
                 Intent intent = new Intent(getApplicationContext()
                         , Login.class);
-                startActivityForResult(intent, 100);
+                startActivity(intent);
             }
         });
 
@@ -319,7 +319,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 closeDrawer(drawerLayout);
-                SignOutDialog(MainActivity.this);
+                auth.signOut();
+
+                client.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        startActivity(new Intent(getApplicationContext()
+                                , MainActivity.class));
+                        finish();
+                        overridePendingTransition(0, 0);
+                    }
+                });
             }
         });
     }
@@ -328,94 +338,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == 100 && resultCode == RESULT_OK) {
-            closeDrawer(drawerLayout);
-            startActivity(new Intent(getApplicationContext(), MainActivity.class)
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
-            finish();
-            overridePendingTransition(0, 0);
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private void SignOutDialog(final Activity activity) {
-        documentReference
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        DocumentSnapshot snapshot = task.getResult();
-                        if (snapshot.exists()) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                            builder.setCancelable(false);
-                            builder.setTitle(
-                                    String.format(
-                                            "%s %s",
-                                            snapshot.getString("firstName"),
-                                            snapshot.getString("lastName")
-                                    )
-                            );
-                            builder.setMessage("Haluatko varmasti kirjautua ulos sovelluksesta?");
-                            builder.setNegativeButton("Peruuta", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                            builder.setPositiveButton("Kirjaudu ulos", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    auth.signOut();
-
-                                    client.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            startActivityForResult(new Intent(getApplicationContext()
-                                                    , MainActivity.class), 100);
-                                            finish();
-                                            overridePendingTransition(0, 0);
-                                        }
-                                    });
-                                }
-                            });
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-                        } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                            builder.setCancelable(false);
-                            builder.setTitle(user.getDisplayName());
-                            builder.setMessage("Haluatko varmasti kirjautua ulos sovelluksesta?");
-                            builder.setNegativeButton("Peruuta", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-                            builder.setPositiveButton("Kirjaudu ulos", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    auth.signOut();
-
-                                    client.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            startActivityForResult(new Intent(getApplicationContext()
-                                                    , MainActivity.class), 100);
-                                            finish();
-                                            overridePendingTransition(0, 0);
-                                        }
-                                    });
-                                }
-                            });
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-                        }
-                    }
-                });
     }
 
     @Override

@@ -6,6 +6,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -16,7 +17,6 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -45,11 +45,13 @@ public class Details extends AppCompatActivity {
     public static final String id = "id";
     public static final String name = "name";
     public static final String image = "image";
+    
+    Toolbar toolbar;
 
     PlayerView playerView;
     ImageView fbLink, twtLink, igLink, ytLink, webLink;
     TextView channelTitle, channelDesc, playerTitle, playerDesc;
-    ImageView fullScreenEnter, fullScreenExit;
+    ImageView ivLogo, fullScreenEnter, fullScreenExit;
     ProgressBar progressBar;
     boolean isFullScreen = false;
 
@@ -67,20 +69,25 @@ public class Details extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
-            setTheme(R.style.Theme_TVApp);
+            setTheme(R.style.Theme_TVApp_NoActionBar);
         } else {
-            setTheme(R.style.Theme_TVApp);
+            setTheme(R.style.Theme_TVApp_NoActionBar);
         }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-        actionBar = getSupportActionBar();
-
         channel = (Channel) getIntent().getSerializableExtra("channel");
 
-        actionBar.setTitle(channel.getName());
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        toolbar = findViewById(R.id.tb_details);
+        setSupportActionBar(toolbar);
+
+        actionBar = getSupportActionBar();
+
+        if (actionBar != null) {
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
@@ -93,9 +100,15 @@ public class Details extends AppCompatActivity {
         bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, image);
         analytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
 
+        ivLogo = findViewById(R.id.iv_logo);
+
         playerView = findViewById(R.id.playerView);
         fullScreenEnter = playerView.findViewById(R.id.exo_fullscreen_icon);
         fullScreenExit = playerView.findViewById(R.id.exo_fullscreen_exit);
+
+        Picasso.get()
+                .load(channel.getThumbnail())
+                .into(ivLogo);
 
         progressBar = findViewById(R.id.progressBar);
 
@@ -109,7 +122,7 @@ public class Details extends AppCompatActivity {
 
                     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+                            | View.SYSTEM_UI_FLAG_LOW_PROFILE);
 
                     if (actionBar != null) {
                         actionBar.hide();

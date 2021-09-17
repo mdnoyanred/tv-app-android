@@ -166,8 +166,10 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             progressDialog.dismiss();
-                            setResult(RESULT_OK);
+                            startActivity(new Intent(getApplicationContext()
+                                    , MainActivity.class));
                             finish();
+                            overridePendingTransition(0, 0);
                         } else {
                             progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), "Virhe! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
