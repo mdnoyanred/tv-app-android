@@ -32,6 +32,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -64,6 +65,7 @@ public class Details extends AppCompatActivity {
     Channel channel;
 
     ActionBar actionBar;
+    AppBarLayout appBarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,7 @@ public class Details extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         actionBar = getSupportActionBar();
+        appBarLayout = findViewById(R.id.appbar);
 
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);
@@ -124,6 +127,8 @@ public class Details extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                             | View.SYSTEM_UI_FLAG_LOW_PROFILE);
 
+                    appBarLayout.setVisibility(View.GONE);
+
                     if (actionBar != null) {
                         actionBar.hide();
                     }
@@ -149,6 +154,8 @@ public class Details extends AppCompatActivity {
                     fullScreenEnter.setVisibility(View.VISIBLE);
 
                     getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+
+                    appBarLayout.setVisibility(View.VISIBLE);
 
                     if (actionBar != null) {
                         actionBar.show();

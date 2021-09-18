@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="?attr/colorPrimary"
-            app:toolbarId="@+id/toolbar">
+            app:toolbarId="@+id/tb_details">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/tb_details"
@@ -32,7 +32,7 @@
                 android:id="@+id/iv_logo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="4dp"
+                android:padding="6dp"
                 app:srcCompat="@drawable/tvapp_logo" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -191,7 +191,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/playerView"
         app:layout_constraintEnd_toEndOf="@+id/playerView"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/playerView"
         app:layout_constraintTop_toBottomOf="@+id/appbar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
