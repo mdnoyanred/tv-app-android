@@ -1,6 +1,5 @@
 package fi.jesunmaailma.tvapp.adapters;
 
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -19,16 +19,21 @@ import java.util.List;
 import fi.jesunmaailma.tvapp.R;
 import fi.jesunmaailma.tvapp.models.Channel;
 import fi.jesunmaailma.tvapp.ui.activities.Details;
+import fi.jesunmaailma.tvapp.ui.activities.Login;
 
 public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.ViewHolder> {
 
     List<Channel> channels;
     String type;
     View view;
+    FirebaseAuth auth;
+    FirebaseUser user;
 
-    public ChannelAdapter(List<Channel> channels, String type) {
+    public ChannelAdapter(List<Channel> channels, String type, FirebaseAuth auth, FirebaseUser user) {
         this.channels = channels;
         this.type = type;
+        this.auth = auth;
+        this.user = user;
     }
 
     @NonNull
@@ -55,12 +60,20 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.ViewHold
                 .placeholder(R.drawable.tvapp_logo_placeholder)
                 .into(holder.channelThumbnail);
 
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), Details.class);
-                intent.putExtra("channel", channel);
-                v.getContext().startActivity(intent);
+                if (user != null) {
+                    Intent intent = new Intent(v.getContext(), Details.class);
+                    intent.putExtra("channel", channel);
+                    v.getContext().startActivity(intent);
+                } else {
+                    Intent intent = new Intent(v.getContext(), Login.class);
+                    v.getContext().startActivity(intent);
+                }
             }
         });
     }

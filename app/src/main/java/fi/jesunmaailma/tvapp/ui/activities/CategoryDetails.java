@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,6 +51,8 @@ public class CategoryDetails extends AppCompatActivity {
     CardView errorContainer;
 
     FirebaseAnalytics analytics;
+    FirebaseAuth auth;
+    FirebaseUser user;
 
     ActionBar actionBar;
 
@@ -82,6 +86,8 @@ public class CategoryDetails extends AppCompatActivity {
         errorContainer = findViewById(R.id.error_container);
 
         analytics = FirebaseAnalytics.getInstance(this);
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
 
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_ID, id);
@@ -91,7 +97,7 @@ public class CategoryDetails extends AppCompatActivity {
 
         categoryDetailsList = findViewById(R.id.category_details_list);
         channelList = new ArrayList<>();
-        channelAdapter = new ChannelAdapter(channelList, "category_details");
+        channelAdapter = new ChannelAdapter(channelList, "category_details", auth, user);
 
         LinearLayoutManager manager = new LinearLayoutManager(this);
         categoryDetailsList.setLayoutManager(manager);

@@ -4,7 +4,9 @@
         <attr name="container_background" format="color" />
         <attr name="snackbar_text_color" format="color" />
         <attr name="background_color" format="color" />
+        <attr name="snackbar_background_color" format="color" />
         <attr name="text_color" format="color" />
         <attr name="container_text_color" format="color" />
+        <attr name="appbar_color" format="color" />
     </declare-styleable>
 </resources>

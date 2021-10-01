@@ -20,7 +20,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/background_color"
+            android:background="?attr/snackbar_background_color"
             android:padding="12dp">
 
             <ImageView
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins"
                 android:text="Olet nyt kirjautunut sisään Jesun Maailma -tililläsi."
-                android:textColor="?attr/text_color"
+                android:textColor="?attr/snackbar_text_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/tv_greeting"
                 app:layout_constraintTop_toBottomOf="@+id/tv_greeting" />
@@ -50,7 +50,7 @@
                 android:fontFamily="@font/poppins_bold"
                 android:text="Hei Testi!"
                 android:textAlignment="textStart"
-                android:textColor="?attr/text_color"
+                android:textColor="?attr/snackbar_text_color"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/ivUserPic"
                 app:layout_constraintStart_toEndOf="@+id/ivUserPic"
@@ -63,7 +63,7 @@
                 android:layout_marginStart="4dp"
                 android:fontFamily="@font/poppins"
                 android:text="(test@test.com)"
-                android:textColor="?attr/text_color"
+                android:textColor="?attr/snackbar_text_color"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_greeting"
                 app:layout_constraintStart_toEndOf="@+id/tv_greeting"

@@ -20,7 +20,7 @@
             android:text="Rekisteröidy"
             android:textColor="?attr/container_text_color"
             android:textAlignment="center"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp" />
@@ -35,7 +35,7 @@
             android:text="Jos sinulla ei ole tiliä, ei hätää!\nVoit luoda sellaisen tässä.\n\nHyödyt tästä tilistä muissa Jesun Maailman digitaalisissa palveluissa.\n\nTV App -palvelussa käytetään Jesun Maailma -tiliä."
             android:textAlignment="center"
             android:textColor="?attr/container_text_color"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/btn_read_more"

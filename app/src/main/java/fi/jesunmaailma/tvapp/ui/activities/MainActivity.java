@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         bigSliderList.setLayoutManager(manager);
 
-        bigSliderAdapter = new ChannelAdapter(channelList, "slider");
+        bigSliderAdapter = new ChannelAdapter(channelList, "slider", auth, user);
         bigSliderList.setAdapter(bigSliderAdapter);
 
         pbLoading.setVisibility(View.VISIBLE);
@@ -324,8 +324,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 client.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        startActivity(new Intent(getApplicationContext()
-                                , MainActivity.class));
+                        startActivity(
+                                new Intent(
+                                        getApplicationContext(),
+                                        MainActivity.class
+                                )
+                        );
                         finish();
                         overridePendingTransition(0, 0);
                     }
@@ -442,7 +446,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         newsChannelList.setLayoutManager(manager);
 
-        newsChannelAdapter = new ChannelAdapter(newsChannels, "category");
+        newsChannelAdapter = new ChannelAdapter(newsChannels, "category", auth, user);
         newsChannelList.setAdapter(newsChannelAdapter);
 
         service.getChannelData(url, new ChannelDataService.OnDataResponse() {
@@ -508,7 +512,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         LinearLayoutManager manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         enterChannelList.setLayoutManager(manager);
 
-        enterChannelAdapter = new ChannelAdapter(enterChannel, "category");
+        enterChannelAdapter = new ChannelAdapter(enterChannel, "category", auth, user);
         enterChannelList.setAdapter(enterChannelAdapter);
 
         service.getChannelData(url, new ChannelDataService.OnDataResponse() {

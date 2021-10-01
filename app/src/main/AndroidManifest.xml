@@ -53,6 +53,19 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter
+                android:icon="@mipmap/ic_launcher"
+                android:label="@string/app_name">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:path="/tv-app"
+                    android:host="finnplace.ml"
+                    android:scheme="https" />
+            </intent-filter>
         </activity>
         
         <activity

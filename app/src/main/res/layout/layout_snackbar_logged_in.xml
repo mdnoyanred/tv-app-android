@@ -20,7 +20,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/background_color"
+            android:background="?attr/snackbar_background_color"
             android:padding="12dp">
 
             <ImageView

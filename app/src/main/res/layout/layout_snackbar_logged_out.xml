@@ -20,7 +20,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?attr/background_color"
+            android:background="?attr/snackbar_background_color"
             android:padding="12dp">
 
             <ImageView
@@ -39,7 +39,7 @@
                 android:layout_marginStart="12dp"
                 android:fontFamily="@font/poppins"
                 android:text="Olet kirjautunut ulos"
-                android:textColor="?attr/text_color"
+                android:textColor="?attr/snackbar_text_color"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView2"
                 app:layout_constraintEnd_toEndOf="parent"
