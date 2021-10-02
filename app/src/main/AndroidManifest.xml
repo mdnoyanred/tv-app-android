@@ -26,6 +26,7 @@
             android:exported="true" />
         <activity
             android:name=".ui.activities.RegisterActivity"
+            android:exported="true"
             android:configChanges="orientation|screenSize|layoutDirection"
             android:theme="@style/Theme.TVApp" />
         <activity
@@ -91,7 +92,8 @@
             android:configChanges="orientation|screenSize|layoutDirection"
             android:theme="@style/Theme.TVApp" />
 
-        <service android:name=".services.TVAppFirebaseMessagingService">
+        <service android:name=".services.TVAppFirebaseMessagingService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

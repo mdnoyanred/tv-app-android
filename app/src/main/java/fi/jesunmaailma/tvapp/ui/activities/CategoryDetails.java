@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -47,6 +48,7 @@ public class CategoryDetails extends AppCompatActivity {
     ChannelDataService channelService;
 
     SwipeRefreshLayout swipeRefreshLayout;
+    ProgressBar pbCategoryDetails;
 
     CardView errorContainer;
 
@@ -83,7 +85,11 @@ public class CategoryDetails extends AppCompatActivity {
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
 
+        pbCategoryDetails = findViewById(R.id.pb_category_details);
+
         errorContainer = findViewById(R.id.error_container);
+
+        pbCategoryDetails.setVisibility(View.VISIBLE);
 
         analytics = FirebaseAnalytics.getInstance(this);
         auth = FirebaseAuth.getInstance();
@@ -108,6 +114,7 @@ public class CategoryDetails extends AppCompatActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                pbCategoryDetails.setVisibility(View.VISIBLE);
                 getDetails();
 
                 categoryDetailsList.setVisibility(View.GONE);
@@ -124,6 +131,7 @@ public class CategoryDetails extends AppCompatActivity {
         channelService.getChannelData(url, new ChannelDataService.OnDataResponse() {
             @Override
             public void onResponse(JSONObject response) {
+                pbCategoryDetails.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
                 categoryDetailsList.setVisibility(View.VISIBLE);
 
@@ -161,6 +169,7 @@ public class CategoryDetails extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
+                pbCategoryDetails.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
 
                 errorContainer.setVisibility(View.VISIBLE);

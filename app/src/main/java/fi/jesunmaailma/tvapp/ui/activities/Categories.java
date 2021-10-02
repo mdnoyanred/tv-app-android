@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -43,6 +44,7 @@ public class Categories extends AppCompatActivity {
     List<Category> categories;
     CategoryAdapter adapter;
     SwipeRefreshLayout swipeRefreshLayout;
+    ProgressBar pbCategories;
 
     CardView errorContainer;
 
@@ -95,10 +97,14 @@ public class Categories extends AppCompatActivity {
         categoriesList.setAdapter(adapter);
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
+        pbCategories = findViewById(R.id.pb_categories);
+
+        pbCategories.setVisibility(View.VISIBLE);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                pbCategories.setVisibility(View.VISIBLE);
                 getCategoryData("https://jesunmaailma.ml/livetv-cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&categories=all&user_id=1");
 
                 errorContainer.setVisibility(View.GONE);
@@ -113,6 +119,7 @@ public class Categories extends AppCompatActivity {
         service.getChannelData(url, new ChannelDataService.OnDataResponse() {
             @Override
             public void onResponse(JSONObject response) {
+                pbCategories.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
                 categoriesList.setVisibility(View.VISIBLE);
 
@@ -142,6 +149,7 @@ public class Categories extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
+                pbCategories.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
 
                 errorContainer.setVisibility(View.VISIBLE);

@@ -226,52 +226,7 @@ public class Details extends AppCompatActivity {
             }
         });
 
-        if (user != null) {
-            playChannel(channel.getLiveUrl());
-        } else {
-            showAlertDialog(
-                    Details.this,
-                    "Kirjautuminen vaaditaan!",
-                    String.format(
-                            "%s\n\n%s",
-                            "Kirjautuminen vaaditaan, jotta voit katsoa netti-tv:tä.",
-                            "Kirjaudu sisään painamalla alla olevaa \"Kirjaudu\"-painiketta."
-                    )
-            );
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == 100 && resultCode == RESULT_OK) {
-            startActivity(new Intent(getApplicationContext(), MainActivity.class)
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
-            finish();
-            overridePendingTransition(0, 0);
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    public void showAlertDialog(Activity activity, String title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setCancelable(false);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.setNegativeButton("Peruuta", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-                finish();
-            }
-        });
-        builder.setPositiveButton("Kirjaudu", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startActivityForResult(new Intent(getApplicationContext(), Login.class), 100);
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        playChannel(channel.getLiveUrl());
     }
 
     public void openLink(String url) {
@@ -323,26 +278,20 @@ public class Details extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        if (user != null) {
-            player.setPlayWhenReady(false);
-        }
+        player.setPlayWhenReady(false);
         super.onPause();
     }
 
     @Override
     protected void onResume() {
-        if (user != null) {
-            player.seekToDefaultPosition();
-            player.setPlayWhenReady(true);
-        }
+        player.seekToDefaultPosition();
+        player.setPlayWhenReady(true);
         super.onResume();
     }
 
     @Override
     protected void onDestroy() {
-        if (user != null) {
-            player.release();
-        }
+        player.release();
         super.onDestroy();
     }
 }
