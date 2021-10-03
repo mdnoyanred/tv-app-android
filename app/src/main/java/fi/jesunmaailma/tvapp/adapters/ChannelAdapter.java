@@ -57,7 +57,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.ViewHold
 
         Picasso.get()
                 .load(channel.getThumbnail())
-                .placeholder(R.drawable.tvapp_logo_placeholder)
+                .placeholder(R.drawable.teeveet_logo_placeholder)
                 .into(holder.channelThumbnail);
 
         auth = FirebaseAuth.getInstance();

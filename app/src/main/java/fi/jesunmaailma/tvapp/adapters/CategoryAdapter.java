@@ -41,7 +41,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
         Picasso.get()
                 .load(category.getImageUrl())
-                .placeholder(R.drawable.tvapp_logo_placeholder)
+                .placeholder(R.drawable.teeveet_logo_placeholder)
                 .into(holder.categoryImage);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
