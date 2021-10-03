@@ -63,7 +63,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:path="/tv-app"
+                    android:path="/teeveet"
                     android:host="finnplace.ml"
                     android:scheme="https" />
             </intent-filter>
