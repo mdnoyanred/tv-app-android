@@ -3,6 +3,7 @@ package fi.jesunmaailma.tvapp.ui.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.browser.customtabs.CustomTabsIntent;
@@ -33,7 +34,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,7 +50,7 @@ import fi.jesunmaailma.tvapp.R;
 public class RegisterActivity extends AppCompatActivity {
     public static final int GOOGLE_REQ_CODE = 100;
 
-    EditText firstNameEdit, lastNameEdit, emailEdit, passwordEdit;
+    EditText firstNameEdit, lastNameEdit, emailEdit, passwordEdit, birthYearEdit;
     MaterialButton registerBtn;
     TextView btnReadMore, loginActivityBtn, btnForgotPassword;
 
@@ -62,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     GoogleSignInClient client;
 
-    MaterialAlertDialogBuilder builder;
+    AlertDialog.Builder builder;
     LayoutInflater inflater;
 
     ProgressDialog progressDialog;
@@ -93,8 +93,9 @@ public class RegisterActivity extends AppCompatActivity {
         lastNameEdit = findViewById(R.id.lastNameEdit);
         emailEdit = findViewById(R.id.emailEdit);
         passwordEdit = findViewById(R.id.passwordEdit);
+        birthYearEdit = findViewById(R.id.birthYearEdit);
 
-        builder = new MaterialAlertDialogBuilder(this);
+        builder = new AlertDialog.Builder(this);
         inflater = getLayoutInflater();
 
         actionBar = getSupportActionBar();
@@ -124,6 +125,7 @@ public class RegisterActivity extends AppCompatActivity {
         lastNameEdit.addTextChangedListener(watcher);
         emailEdit.addTextChangedListener(watcher);
         passwordEdit.addTextChangedListener(watcher);
+        birthYearEdit.addTextChangedListener(watcher);
 
         btnReadMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,6 +159,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String lastName = lastNameEdit.getText().toString();
                 String email = emailEdit.getText().toString();
                 String password = passwordEdit.getText().toString();
+                String birthYear = birthYearEdit.getText().toString();
 
                 if (firstName.isEmpty()) {
                     firstNameEdit.setError("Etunimi vaaditaan.");
@@ -183,6 +186,11 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
+                if (birthYear.isEmpty()) {
+                    birthYearEdit.setError("Syntymävuosi vaaditaan.");
+                    return;
+                }
+
                 progressDialog.show();
                 registerBtn.setEnabled(false);
 
@@ -197,6 +205,7 @@ public class RegisterActivity extends AppCompatActivity {
                             userDetails.put("firstName", firstName);
                             userDetails.put("lastName", lastName);
                             userDetails.put("email", email);
+                            userDetails.put("birthYear", birthYear);
                             documentReference.set(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -316,8 +325,9 @@ public class RegisterActivity extends AppCompatActivity {
             String lastName = lastNameEdit.getText().toString();
             String email = emailEdit.getText().toString();
             String password = passwordEdit.getText().toString();
+            String birthYear = birthYearEdit.getText().toString();
 
-            registerBtn.setEnabled(!firstName.isEmpty() && !lastName.isEmpty() && !email.isEmpty() && !password.isEmpty());
+            registerBtn.setEnabled(!firstName.isEmpty() && !lastName.isEmpty() && !email.isEmpty() && !password.isEmpty() && !birthYear.isEmpty());
         }
 
         @Override

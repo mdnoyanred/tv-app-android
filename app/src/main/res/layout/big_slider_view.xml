@@ -27,7 +27,6 @@
                 android:id="@+id/channelThumbnail"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
-                android:padding="8dp"
                 android:scaleType="fitCenter"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -40,12 +39,25 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="#40000000"
-                android:padding="8dp"
+                android:fontFamily="@font/poppins_bold"
+                android:padding="4dp"
                 android:text="CHANNEL NAME"
                 android:textColor="@color/white"
                 android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/channelThumbnail"
+                app:layout_constraintBottom_toTopOf="@+id/channelDescription"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/channelDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="#40000000"
+                android:fontFamily="@font/poppins"
+                android:padding="4dp"
+                android:text="Channel Description"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>

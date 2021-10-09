@@ -1,7 +1,6 @@
 package fi.jesunmaailma.tvapp.ui.activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -51,7 +49,6 @@ import fi.jesunmaailma.tvapp.models.Channel;
 import fi.jesunmaailma.tvapp.services.ChannelDataService;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    public static final String TAG = "TAG";
     public static final String id = "id";
     public static final String name = "name";
     public static final String image = "image";
@@ -154,9 +151,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         pbLoading.setVisibility(View.VISIBLE);
 
-        getSliderData("https://jesunmaailma.ml/livetv-cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&channels=all&user_id=1");
-        getNewsChannels("https://jesunmaailma.ml/livetv-cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=Uutiset&user_id=1");
-        getEntertainmentChannel("https://jesunmaailma.ml/livetv-cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=Viihde&user_id=1");
+        getSliderData(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&channels=all&user_id=1");
+        getNewsChannels(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=Uutiset&user_id=1");
+        getEntertainmentChannel(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=Viihde&user_id=1");
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -165,15 +162,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 errorContainer.setVisibility(View.GONE);
 
                 bigSliderList.setVisibility(View.GONE);
-                getSliderData("https://jesunmaailma.ml/livetv-cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&channels=all&user_id=1");
+                getSliderData(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&channels=all&user_id=1");
 
                 newsChannelContainer.setVisibility(View.GONE);
                 newsChannelList.setVisibility(View.GONE);
-                getNewsChannels("https://jesunmaailma.ml/livetv-cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=Uutiset&user_id=1");
+                getNewsChannels(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=Uutiset&user_id=1");
 
                 enterChannelContainer.setVisibility(View.GONE);
                 enterChannelList.setVisibility(View.GONE);
-                getEntertainmentChannel("https://jesunmaailma.ml/livetv-cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=Viihde&user_id=1");
+                getEntertainmentChannel(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=Viihde&user_id=1");
             }
         });
 

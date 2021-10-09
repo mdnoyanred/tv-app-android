@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,8 +13,9 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:cardCornerRadius="8dp"
         android:foreground="?attr/selectableItemBackground"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,11 +27,10 @@
 
             <ImageView
                 android:id="@+id/catImage"
-                android:layout_width="0dp"
-                android:layout_height="150dp"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="150dp"
+                android:layout_height="96dp"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/news" />
@@ -39,18 +40,17 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
+                android:ellipsize="end"
+                android:fontFamily="@font/poppins"
                 android:text="Category Title"
                 android:textColor="?attr/container_text_color"
                 android:textSize="18sp"
-                android:fontFamily="@font/poppins"
-                android:ellipsize="end"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/catImage"
-                app:layout_constraintTop_toBottomOf="@+id/catImage" />
+                app:layout_constraintStart_toEndOf="@+id/catImage"
+                app:layout_constraintTop_toTopOf="@+id/catImage" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 

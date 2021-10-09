@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">Teeveet</string>
+
+    <string name="teeveet_prod_api_url" translatable="false">https://jesunmaailma.ml/livetv-cms/api.php</string>
+    <string name="teeveet_dev_api_url" translatable="false">http://jesunmaailma.tk/livetv-cms/api.php</string>
+
     <string name="open">open</string>
     <string name="close">close</string>
 
@@ -7,6 +11,7 @@
 
     <string name="email" translatable="false">Sähköpostiosoite <font color="#FF03DAC5">*</font></string>
     <string name="password" translatable="false">Salasana <font color="#FF03DAC5">*</font></string>
+    <string name="birth_year" translatable="false">Syntymävuosi <font color="#FF03DAC5">*</font></string>
     <string name="first_name" translatable="false">Etunimi <font color="#FF03DAC5">*</font></string>
     <string name="last_name" translatable="false">Sukunimi <font color="#FF03DAC5">*</font></string>
 

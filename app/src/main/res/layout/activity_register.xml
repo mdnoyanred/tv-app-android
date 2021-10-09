@@ -32,7 +32,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/poppins_medium"
-            android:text="Jos sinulla ei ole tiliä, ei hätää!\nVoit luoda sellaisen tässä.\n\nHyödyt tästä tilistä muissa Jesun Maailman digitaalisissa palveluissa.\n\nTV App -palvelussa käytetään Jesun Maailma -tiliä."
+            android:text="Jos sinulla ei ole tiliä, ei hätää!\nVoit luoda sellaisen tässä.\n\nHyödyt tästä tilistä muissa Jesun Maailman digitaalisissa palveluissa.\n\nTeeveet-palvelussa käytetään Jesun Maailma -tiliä."
             android:textAlignment="center"
             android:textColor="?attr/container_text_color"
             android:textSize="16sp" />
@@ -151,8 +151,33 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins"
                 android:hint="@string/password"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionNext"
                 android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_birth_year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            app:hintTextColor="?attr/container_text_color"
+            app:startIconDrawable="@drawable/ic_time"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/til_password">
+
+            <EditText
+                android:id="@+id/birthYearEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins"
+                android:hint="@string/birth_year"
+                android:imeOptions="actionDone"
+                android:inputType="number" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

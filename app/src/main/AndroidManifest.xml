@@ -12,6 +12,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.TVApp">
         <activity
             android:name=".ui.activities.Settings"
@@ -83,16 +84,14 @@
 
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-            android:exported="true"
             android:configChanges="orientation|screenSize|layoutDirection"
             android:theme="@style/Theme.TVApp" />
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
-            android:exported="true"
             android:configChanges="orientation|screenSize|layoutDirection"
             android:theme="@style/Theme.TVApp" />
 
-        <service android:name=".services.TVAppFirebaseMessagingService"
+        <service android:name=".services.TeeveetFirebaseMessagingService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

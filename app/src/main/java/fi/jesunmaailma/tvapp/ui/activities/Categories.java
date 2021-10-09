@@ -12,7 +12,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -33,7 +32,6 @@ import fi.jesunmaailma.tvapp.models.Category;
 import fi.jesunmaailma.tvapp.services.ChannelDataService;
 
 public class Categories extends AppCompatActivity {
-    public static final String TAG = "TAG";
     public static final String id = "id";
     public static final String name = "name";
     public static final String image = "image";
@@ -44,6 +42,7 @@ public class Categories extends AppCompatActivity {
     List<Category> categories;
     CategoryAdapter adapter;
     SwipeRefreshLayout swipeRefreshLayout;
+
     ProgressBar pbCategories;
 
     CardView errorContainer;
@@ -105,14 +104,14 @@ public class Categories extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 pbCategories.setVisibility(View.VISIBLE);
-                getCategoryData("https://jesunmaailma.ml/livetv-cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&categories=all&user_id=1");
+                getCategoryData(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&categories=all&user_id=1");
 
                 errorContainer.setVisibility(View.GONE);
                 categoriesList.setVisibility(View.GONE);
             }
         });
 
-        getCategoryData("https://jesunmaailma.ml/livetv-cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&categories=all&user_id=1");
+        getCategoryData(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&categories=all&user_id=1");
     }
 
     public void getCategoryData(String url) {
@@ -130,13 +129,11 @@ public class Categories extends AppCompatActivity {
                     try {
                         JSONObject categoryData = response.getJSONObject(String.valueOf(i));
 
-                        Category category = new Category(
-                                categoryData.getInt("id"),
-                                categoryData.getString("name"),
-                                categoryData.getString("image_url")
-                        );
+                        Category category = new Category();
 
-                        Log.d(TAG, "onResponse: " + category.toString());
+                        category.setId(categoryData.getInt("id"));
+                        category.setName(categoryData.getString("name"));
+                        category.setImageUrl(categoryData.getString("image_url"));
 
                         categories.add(category);
                         adapter.notifyDataSetChanged();

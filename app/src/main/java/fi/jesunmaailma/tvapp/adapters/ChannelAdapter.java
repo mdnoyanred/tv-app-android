@@ -54,6 +54,7 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.ViewHold
         Channel channel = channels.get(position);
 
         holder.channelName.setText(channel.getName());
+        holder.channelDescription.setText(channel.getDescription());
 
         Picasso.get()
                 .load(channel.getThumbnail())
@@ -85,13 +86,14 @@ public class ChannelAdapter extends RecyclerView.Adapter<ChannelAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView channelThumbnail;
-        TextView channelName;
+        TextView channelName, channelDescription;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             channelThumbnail = itemView.findViewById(R.id.channelThumbnail);
             channelName = itemView.findViewById(R.id.channelName);
+            channelDescription = itemView.findViewById(R.id.channelDescription);
         }
     }
 }

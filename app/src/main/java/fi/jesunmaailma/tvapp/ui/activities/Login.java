@@ -3,10 +3,10 @@ package fi.jesunmaailma.tvapp.ui.activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.browser.customtabs.CustomTabsIntent;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -34,9 +34,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -67,7 +64,7 @@ public class Login extends AppCompatActivity {
     ProgressDialog progressDialog;
     ActionBar actionBar;
 
-    MaterialAlertDialogBuilder builder;
+    AlertDialog.Builder builder;
     LayoutInflater inflater;
 
     @Override
@@ -93,7 +90,7 @@ public class Login extends AppCompatActivity {
         emailEdit = findViewById(R.id.emailEdit);
         passwordEdit = findViewById(R.id.passwordEdit);
 
-        builder = new MaterialAlertDialogBuilder(this);
+        builder = new AlertDialog.Builder(this);
         inflater = getLayoutInflater();
 
         actionBar = getSupportActionBar();

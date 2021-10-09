@@ -35,7 +35,6 @@ import fi.jesunmaailma.tvapp.models.Category;
 import fi.jesunmaailma.tvapp.services.ChannelDataService;
 
 public class CategoryDetails extends AppCompatActivity {
-    public static final String TAG = "TAG";
     public static final String id = "id";
     public static final String name = "name";
     public static final String image = "image";
@@ -48,6 +47,7 @@ public class CategoryDetails extends AppCompatActivity {
     ChannelDataService channelService;
 
     SwipeRefreshLayout swipeRefreshLayout;
+
     ProgressBar pbCategoryDetails;
 
     CardView errorContainer;
@@ -115,18 +115,17 @@ public class CategoryDetails extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 pbCategoryDetails.setVisibility(View.VISIBLE);
-                getDetails();
+                getDetails(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=" + category.getName() + "&user_id=1");
 
                 categoryDetailsList.setVisibility(View.GONE);
                 errorContainer.setVisibility(View.GONE);
             }
         });
 
-        getDetails();
+        getDetails(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=" + category.getName() + "&user_id=1");
     }
 
-    public void getDetails() {
-        String url = "https://jesunmaailma.ml/livetv-cms/api.php?api_key=1A4mgi2rBHCJdqggsYVx&category=" + category.getName() + "&user_id=1";
+    public void getDetails(String url) {
 
         channelService.getChannelData(url, new ChannelDataService.OnDataResponse() {
             @Override

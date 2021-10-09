@@ -21,7 +21,7 @@ import java.util.Random;
 import fi.jesunmaailma.tvapp.ui.activities.MainActivity;
 import fi.jesunmaailma.tvapp.R;
 
-public class TVAppFirebaseMessagingService extends FirebaseMessagingService {
+public class TeeveetFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);

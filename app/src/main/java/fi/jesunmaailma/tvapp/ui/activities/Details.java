@@ -1,18 +1,13 @@
 package fi.jesunmaailma.tvapp.ui.activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.app.Activity;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.net.Uri;
@@ -30,8 +25,6 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,7 +35,6 @@ import fi.jesunmaailma.tvapp.R;
 import fi.jesunmaailma.tvapp.models.Channel;
 
 public class Details extends AppCompatActivity {
-    public static final String TAG = "TAG";
     public static final String id = "id";
     public static final String name = "name";
     public static final String image = "image";
@@ -53,7 +45,9 @@ public class Details extends AppCompatActivity {
     ImageView fbLink, twtLink, igLink, ytLink, webLink;
     TextView channelTitle, channelDesc, playerTitle, playerDesc;
     ImageView ivLogo, fullScreenEnter, fullScreenExit;
+
     ProgressBar progressBar;
+
     boolean isFullScreen = false;
 
     FirebaseAuth auth;
