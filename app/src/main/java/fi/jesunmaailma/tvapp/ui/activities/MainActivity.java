@@ -63,10 +63,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Toolbar toolbar;
     SwipeRefreshLayout swipeRefreshLayout;
 
-    CardView newsChannelContainer, enterChannelContainer, errorContainer;
+    CardView errorContainer;
     TextView tvError;
 
-    ProgressBar pbLoading;
+    ProgressBar pbLoadingSlider, pbLoadingNews, pbLoadingEntertainment;
 
     ChannelDataService service;
 
@@ -106,13 +106,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
 
-        newsChannelContainer = findViewById(R.id.news_channel_container);
-        enterChannelContainer = findViewById(R.id.enter_channel_container);
         errorContainer = findViewById(R.id.error_container);
 
         tvError = findViewById(R.id.tv_error);
 
-        pbLoading = findViewById(R.id.pbLoading);
+        pbLoadingSlider = findViewById(R.id.pbLoadingSlider);
+        pbLoadingNews = findViewById(R.id.pbLoadingNews);
+        pbLoadingEntertainment = findViewById(R.id.pbLoadingEntertainment);
 
         setSupportActionBar(toolbar);
 
@@ -149,7 +149,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bigSliderAdapter = new ChannelAdapter(channelList, "slider", auth, user);
         bigSliderList.setAdapter(bigSliderAdapter);
 
-        pbLoading.setVisibility(View.VISIBLE);
+        pbLoadingSlider.setVisibility(View.VISIBLE);
+        pbLoadingNews.setVisibility(View.VISIBLE);
+        pbLoadingEntertainment.setVisibility(View.VISIBLE);
 
         getSliderData(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&channels=all&user_id=1");
         getNewsChannels(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=Uutiset&user_id=1");
@@ -158,17 +160,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                pbLoading.setVisibility(View.VISIBLE);
+                swipeRefreshLayout.setRefreshing(false);
+
+                pbLoadingSlider.setVisibility(View.VISIBLE);
+                pbLoadingNews.setVisibility(View.VISIBLE);
+                pbLoadingEntertainment.setVisibility(View.VISIBLE);
+
                 errorContainer.setVisibility(View.GONE);
 
                 bigSliderList.setVisibility(View.GONE);
                 getSliderData(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&channels=all&user_id=1");
 
-                newsChannelContainer.setVisibility(View.GONE);
                 newsChannelList.setVisibility(View.GONE);
                 getNewsChannels(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=Uutiset&user_id=1");
 
-                enterChannelContainer.setVisibility(View.GONE);
                 enterChannelList.setVisibility(View.GONE);
                 getEntertainmentChannel(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=Viihde&user_id=1");
             }
@@ -386,7 +391,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onResponse(JSONObject response) {
 
                 swipeRefreshLayout.setRefreshing(false);
-                pbLoading.setVisibility(View.GONE);
+                pbLoadingSlider.setVisibility(View.GONE);
+                pbLoadingNews.setVisibility(View.GONE);
+                pbLoadingEntertainment.setVisibility(View.GONE);
                 bigSliderList.setVisibility(View.VISIBLE);
 
                 channelList.clear();
@@ -423,14 +430,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onError(String error) {
                 swipeRefreshLayout.setRefreshing(false);
                 errorContainer.setVisibility(View.VISIBLE);
-                pbLoading.setVisibility(View.GONE);
+
+                pbLoadingSlider.setVisibility(View.GONE);
+                pbLoadingNews.setVisibility(View.GONE);
+                pbLoadingEntertainment.setVisibility(View.GONE);
 
                 bigSliderList.setVisibility(View.GONE);
 
-                newsChannelContainer.setVisibility(View.GONE);
                 newsChannelList.setVisibility(View.GONE);
 
-                newsChannelContainer.setVisibility(View.GONE);
                 newsChannelList.setVisibility(View.GONE);
             }
         });
@@ -451,8 +459,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onResponse(JSONObject response) {
 
                 swipeRefreshLayout.setRefreshing(false);
-                pbLoading.setVisibility(View.GONE);
-                newsChannelContainer.setVisibility(View.VISIBLE);
+
+                pbLoadingSlider.setVisibility(View.GONE);
+                pbLoadingNews.setVisibility(View.GONE);
+                pbLoadingEntertainment.setVisibility(View.GONE);
+
                 newsChannelList.setVisibility(View.VISIBLE);
 
                 newsChannels.clear();
@@ -489,14 +500,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onError(String error) {
                 swipeRefreshLayout.setRefreshing(false);
                 errorContainer.setVisibility(View.VISIBLE);
-                pbLoading.setVisibility(View.GONE);
+
+                pbLoadingSlider.setVisibility(View.GONE);
+                pbLoadingNews.setVisibility(View.GONE);
+                pbLoadingEntertainment.setVisibility(View.GONE);
 
                 bigSliderList.setVisibility(View.GONE);
 
-                newsChannelContainer.setVisibility(View.GONE);
                 newsChannelList.setVisibility(View.GONE);
 
-                newsChannelContainer.setVisibility(View.GONE);
                 newsChannelList.setVisibility(View.GONE);
             }
         });
@@ -517,8 +529,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onResponse(JSONObject response) {
 
                 swipeRefreshLayout.setRefreshing(false);
-                pbLoading.setVisibility(View.GONE);
-                enterChannelContainer.setVisibility(View.VISIBLE);
+
+                pbLoadingSlider.setVisibility(View.GONE);
+                pbLoadingNews.setVisibility(View.GONE);
+                pbLoadingEntertainment.setVisibility(View.GONE);
+
                 enterChannelList.setVisibility(View.VISIBLE);
 
                 enterChannel.clear();
@@ -555,14 +570,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onError(String error) {
                 swipeRefreshLayout.setRefreshing(false);
                 errorContainer.setVisibility(View.VISIBLE);
-                pbLoading.setVisibility(View.GONE);
+
+                pbLoadingSlider.setVisibility(View.GONE);
+                pbLoadingNews.setVisibility(View.GONE);
+                pbLoadingEntertainment.setVisibility(View.GONE);
 
                 bigSliderList.setVisibility(View.GONE);
 
-                newsChannelContainer.setVisibility(View.GONE);
                 newsChannelList.setVisibility(View.GONE);
 
-                newsChannelContainer.setVisibility(View.GONE);
                 newsChannelList.setVisibility(View.GONE);
             }
         });

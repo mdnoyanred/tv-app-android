@@ -52,6 +52,14 @@
                 android:orientation="vertical"
                 android:visibility="visible">
 
+                <ProgressBar
+                    android:id="@+id/pbLoadingSlider"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_margin="16dp"
+                    android:visibility="gone" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/big_slider_list"
                     android:layout_width="match_parent"
@@ -61,7 +69,6 @@
                 </androidx.recyclerview.widget.RecyclerView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/news_channel_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:cardBackgroundColor="?attr/container_background"
@@ -73,7 +80,7 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/textView"
+                            android:id="@+id/textView2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
@@ -90,16 +97,23 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
 
+                <ProgressBar
+                    android:id="@+id/pbLoadingNews"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_margin="16dp"
+                    android:visibility="gone" />
+
                 <androidx.recyclerview.widget.RecyclerView
-                    android:visibility="visible"
                     android:id="@+id/news_channel_list"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:visibility="visible">
 
                 </androidx.recyclerview.widget.RecyclerView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/enter_channel_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:cardBackgroundColor="?attr/container_background"
@@ -128,10 +142,19 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
 
+                <ProgressBar
+                    android:id="@+id/pbLoadingEntertainment"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_margin="16dp"
+                    android:visibility="gone" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/enter_channel_list"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:visibility="visible" />
 
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
@@ -189,17 +212,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/imageView3" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
-
-        <ProgressBar
-            android:id="@+id/pbLoading"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/clRoot"
