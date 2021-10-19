@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.TVApp" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/black</item>
-        <item name="colorPrimaryVariant">@color/black</item>
+        <item name="colorPrimary">@color/background_color</item>
+        <item name="colorPrimaryVariant">@color/background_color</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_700</item>
@@ -13,8 +13,8 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
 
-        <item name="container_background">#111111</item>
-        <item name="background_color">#FFFFFF</item>
+        <item name="container_background">#00142f</item>
+        <item name="background_color">#00142f</item>
         <item name="snackbar_background_color">#FFFFFF</item>
         <item name="snackbar_text_color">#252525</item>
         <item name="text_color">#000000</item>
@@ -24,7 +24,7 @@
     <style name="Theme.TVApp.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/teal_200</item>
-        <item name="colorPrimaryVariant">@color/black</item>
+        <item name="colorPrimaryVariant">@color/background_color</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_700</item>
@@ -32,14 +32,15 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:navigationBarColor" tools:targetApi="l">@color/background_color</item>
         <!-- Customize your theme here. -->
 
-        <item name="container_background">#000000</item>
-        <item name="background_color">#000000</item>
+        <item name="container_background">#00142f</item>
+        <item name="background_color">#00142f</item>
         <item name="snackbar_background_color">#FFFFFF</item>
         <item name="snackbar_text_color">#252525</item>
-        <item name="text_color">#000000</item>
+        <item name="text_color">#FFFFFF</item>
         <item name="container_text_color">#FFFFFF</item>
-        <item name="appbar_color">#FFFFFF</item>
+        <item name="appbar_color">@color/background_color</item>
     </style>
 </resources>

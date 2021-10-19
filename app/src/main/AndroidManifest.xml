@@ -18,32 +18,32 @@
             android:name=".ui.activities.Settings"
             android:configChanges="orientation|screenSize|layoutDirection"
             android:label="@string/title_activity_settings"
-            android:theme="@style/Theme.TVApp"
+            android:theme="@style/Theme.TVApp.NoActionBar"
             android:exported="true" />
         <activity
             android:name=".ui.activities.Login"
             android:configChanges="orientation|screenSize|layoutDirection"
-            android:theme="@style/Theme.TVApp"
+            android:theme="@style/Theme.TVApp.NoActionBar"
             android:exported="true" />
         <activity
             android:name=".ui.activities.RegisterActivity"
             android:exported="true"
             android:configChanges="orientation|screenSize|layoutDirection"
-            android:theme="@style/Theme.TVApp" />
+            android:theme="@style/Theme.TVApp.NoActionBar" />
         <activity
             android:name=".ui.activities.CategoryDetails"
             android:configChanges="orientation|screenSize|layoutDirection"
-            android:theme="@style/Theme.TVApp"
+            android:theme="@style/Theme.TVApp.NoActionBar"
             android:exported="true" />
         <activity
             android:name=".ui.activities.Categories"
             android:configChanges="screenSize|orientation|layoutDirection"
-            android:theme="@style/Theme.TVApp"
+            android:theme="@style/Theme.TVApp.NoActionBar"
             android:exported="true" />
         <activity
             android:name=".ui.activities.Details"
             android:configChanges="screenSize|layoutDirection|orientation|keyboardHidden"
-            android:theme="@style/Theme.TVApp"
+            android:theme="@style/Theme.TVApp.NoActionBar"
             android:exported="true" />
         <activity
             android:name=".ui.activities.SplashActivity"

@@ -153,9 +153,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         pbLoadingNews.setVisibility(View.VISIBLE);
         pbLoadingEntertainment.setVisibility(View.VISIBLE);
 
-        getSliderData(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&channels=all&user_id=1");
-        getNewsChannels(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=Uutiset&user_id=1");
-        getEntertainmentChannel(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=Viihde&user_id=1");
+        getSliderData(getResources().getString(R.string.teeveet_dev_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&channels=all&user_id=1");
+        getNewsChannels(getResources().getString(R.string.teeveet_dev_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=Uutiset&user_id=1");
+        getEntertainmentChannel(getResources().getString(R.string.teeveet_dev_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=Viihde&user_id=1");
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -260,13 +260,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         TextView tvName = headerView.findViewById(R.id.tv_name);
-        TextView tvEmail = headerView.findViewById(R.id.tv_email);
         TextView tvSignIn = headerView.findViewById(R.id.tv_login);
         TextView tvSignOut = headerView.findViewById(R.id.tv_sign_out);
 
         if (user != null) {
             tvName.setVisibility(View.VISIBLE);
-            tvEmail.setVisibility(View.VISIBLE);
             tvSignIn.setVisibility(View.GONE);
             tvSignOut.setVisibility(View.VISIBLE);
 
@@ -283,26 +281,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             if (snapshot.exists()) {
                                 tvName.setText(
                                         String.format(
-                                                "%s %s",
+                                                "Kirjauduit sisään nimellä:\n%s %s",
                                                 snapshot.getString("firstName"),
                                                 snapshot.getString("lastName")
                                         )
                                 );
-                                tvEmail.setText(
+                            } else {
+                                tvName.setText(
                                         String.format(
-                                                "%s",
-                                                snapshot.getString("email")
+                                                "Kirjauduit sisään nimellä:\n%s",
+                                                user.getDisplayName()
                                         )
                                 );
-                            } else {
-                                tvName.setText(user.getDisplayName());
-                                tvEmail.setText(user.getEmail());
                             }
                         }
                     });
         } else {
             tvName.setVisibility(View.GONE);
-            tvEmail.setVisibility(View.GONE);
             tvSignIn.setVisibility(View.VISIBLE);
             tvSignOut.setVisibility(View.GONE);
         }

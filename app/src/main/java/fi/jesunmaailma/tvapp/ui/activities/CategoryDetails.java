@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -56,28 +57,36 @@ public class CategoryDetails extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseUser user;
 
+    Toolbar toolbar;
     ActionBar actionBar;
 
     Category category;
+
+    TextView tvChannelTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
-            setTheme(R.style.Theme_TVApp);
+            setTheme(R.style.Theme_TVApp_NoActionBar);
         } else {
-            setTheme(R.style.Theme_TVApp);
+            setTheme(R.style.Theme_TVApp_NoActionBar);
         }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_details);
+
+        toolbar = findViewById(R.id.tb_category_details);
+        setSupportActionBar(toolbar);
+
+        tvChannelTitle = findViewById(R.id.tv_channel_title);
 
         actionBar = getSupportActionBar();
 
         category = (Category) getIntent().getSerializableExtra("category");
 
         if (actionBar != null) {
-            actionBar.setTitle(category.getName());
+            tvChannelTitle.setText(category.getName());
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 

@@ -6,6 +6,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 import androidx.browser.customtabs.CustomTabsIntent;
 
 import android.app.ProgressDialog;
@@ -68,15 +69,17 @@ public class RegisterActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     ActionBar actionBar;
 
+    Toolbar toolbar;
+
     String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
-            setTheme(R.style.Theme_TVApp);
+            setTheme(R.style.Theme_TVApp_NoActionBar);
         } else {
-            setTheme(R.style.Theme_TVApp);
+            setTheme(R.style.Theme_TVApp_NoActionBar);
         }
 
         super.onCreate(savedInstanceState);
@@ -97,6 +100,9 @@ public class RegisterActivity extends AppCompatActivity {
 
         builder = new AlertDialog.Builder(this);
         inflater = getLayoutInflater();
+
+        toolbar = findViewById(R.id.tb_register);
+        setSupportActionBar(toolbar);
 
         actionBar = getSupportActionBar();
 

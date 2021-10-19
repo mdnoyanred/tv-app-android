@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -30,14 +31,15 @@ public class Settings extends AppCompatActivity {
     public static final String image = "image";
 
     FirebaseAnalytics analytics;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO) {
-            setTheme(R.style.Theme_TVApp);
+            setTheme(R.style.Theme_TVApp_NoActionBar);
         } else {
-            setTheme(R.style.Theme_TVApp);
+            setTheme(R.style.Theme_TVApp_NoActionBar);
         }
 
         super.onCreate(savedInstanceState);
@@ -48,6 +50,10 @@ public class Settings extends AppCompatActivity {
                     .replace(R.id.settings, new SettingsFragment())
                     .commit();
         }
+
+        toolbar = findViewById(R.id.tb_login);
+        setSupportActionBar(toolbar);
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
