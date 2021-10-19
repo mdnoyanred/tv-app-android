@@ -28,6 +28,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -261,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View headerView = navigationView.getHeaderView(0);
         TextView tvName = headerView.findViewById(R.id.tv_name);
         TextView tvSignIn = headerView.findViewById(R.id.tv_login);
-        TextView tvSignOut = headerView.findViewById(R.id.tv_sign_out);
+        MaterialButton tvSignOut = headerView.findViewById(R.id.tv_sign_out);
 
         if (user != null) {
             tvName.setVisibility(View.VISIBLE);
