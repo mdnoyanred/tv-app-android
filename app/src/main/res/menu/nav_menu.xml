@@ -10,16 +10,12 @@
         android:icon="@drawable/ic_categories"
         android:title="Kategoriat" />
     <item
+        android:id="@+id/mi_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="Asetukset" />
+    <item
         android:id="@+id/mi_exit"
         android:icon="@drawable/ic_exit"
         android:title="Poistu" />
 
-    <item android:title="Asetukset">
-        <menu>
-            <item
-                android:id="@+id/mi_settings"
-                android:icon="@drawable/ic_settings"
-                android:title="Asetukset" />
-        </menu>
-    </item>
 </menu>

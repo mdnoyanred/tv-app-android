@@ -38,7 +38,7 @@
                 android:text="Viihde"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>

@@ -51,7 +51,7 @@ import fi.jesunmaailma.tvapp.R;
 public class RegisterActivity extends AppCompatActivity {
     public static final int GOOGLE_REQ_CODE = 100;
 
-    EditText firstNameEdit, lastNameEdit, emailEdit, passwordEdit, birthYearEdit;
+    EditText firstNameEdit, lastNameEdit, emailEdit, passwordEdit;
     MaterialButton registerBtn;
     TextView btnReadMore, loginActivityBtn, btnForgotPassword;
 
@@ -96,7 +96,6 @@ public class RegisterActivity extends AppCompatActivity {
         lastNameEdit = findViewById(R.id.lastNameEdit);
         emailEdit = findViewById(R.id.emailEdit);
         passwordEdit = findViewById(R.id.passwordEdit);
-        birthYearEdit = findViewById(R.id.birthYearEdit);
 
         builder = new AlertDialog.Builder(this);
         inflater = getLayoutInflater();
@@ -131,7 +130,6 @@ public class RegisterActivity extends AppCompatActivity {
         lastNameEdit.addTextChangedListener(watcher);
         emailEdit.addTextChangedListener(watcher);
         passwordEdit.addTextChangedListener(watcher);
-        birthYearEdit.addTextChangedListener(watcher);
 
         btnReadMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,7 +163,6 @@ public class RegisterActivity extends AppCompatActivity {
                 String lastName = lastNameEdit.getText().toString();
                 String email = emailEdit.getText().toString();
                 String password = passwordEdit.getText().toString();
-                String birthYear = birthYearEdit.getText().toString();
 
                 if (firstName.isEmpty()) {
                     firstNameEdit.setError("Etunimi vaaditaan.");
@@ -192,11 +189,6 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (birthYear.isEmpty()) {
-                    birthYearEdit.setError("Syntymävuosi vaaditaan.");
-                    return;
-                }
-
                 progressDialog.show();
                 registerBtn.setEnabled(false);
 
@@ -211,7 +203,6 @@ public class RegisterActivity extends AppCompatActivity {
                             userDetails.put("firstName", firstName);
                             userDetails.put("lastName", lastName);
                             userDetails.put("email", email);
-                            userDetails.put("birthYear", birthYear);
                             documentReference.set(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
@@ -331,9 +322,8 @@ public class RegisterActivity extends AppCompatActivity {
             String lastName = lastNameEdit.getText().toString();
             String email = emailEdit.getText().toString();
             String password = passwordEdit.getText().toString();
-            String birthYear = birthYearEdit.getText().toString();
 
-            registerBtn.setEnabled(!firstName.isEmpty() && !lastName.isEmpty() && !email.isEmpty() && !password.isEmpty() && !birthYear.isEmpty());
+            registerBtn.setEnabled(!firstName.isEmpty() && !lastName.isEmpty() && !email.isEmpty() && !password.isEmpty());
         }
 
         @Override

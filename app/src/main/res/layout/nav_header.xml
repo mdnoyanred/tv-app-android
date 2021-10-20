@@ -18,11 +18,9 @@
 
     <TextView
         android:id="@+id/tv_login"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:fontFamily="@font/poppins"
         android:foreground="?attr/selectableItemBackground"

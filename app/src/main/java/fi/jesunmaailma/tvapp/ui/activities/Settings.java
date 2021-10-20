@@ -51,7 +51,7 @@ public class Settings extends AppCompatActivity {
                     .commit();
         }
 
-        toolbar = findViewById(R.id.tb_login);
+        toolbar = findViewById(R.id.tb_settings);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();

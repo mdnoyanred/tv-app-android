@@ -11,8 +11,8 @@ android {
         applicationId "fi.jesunmaailma.tvapp"
         minSdkVersion 21
         targetSdkVersion 31
-        versionCode 10051
-        versionName "1.5.1"
+        versionCode 10052
+        versionName "1.5.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -9,11 +9,10 @@
 
     <string name="read_more" translatable="false">Lue lisää Jesun Maailma -tilistä</string>
 
-    <string name="email" translatable="false">Sähköpostiosoite <font color="#FF03DAC5">*</font></string>
-    <string name="password" translatable="false">Salasana <font color="#FF03DAC5">*</font></string>
-    <string name="birth_year" translatable="false">Syntymävuosi <font color="#FF03DAC5">*</font></string>
-    <string name="first_name" translatable="false">Etunimi <font color="#FF03DAC5">*</font></string>
-    <string name="last_name" translatable="false">Sukunimi <font color="#FF03DAC5">*</font></string>
+    <string name="email" translatable="false">Sähköpostiosoite <font color="#00ccc2">*</font></string>
+    <string name="password" translatable="false">Salasana <font color="#00ccc2">*</font></string>
+    <string name="first_name" translatable="false">Etunimi <font color="#00ccc2">*</font></string>
+    <string name="last_name" translatable="false">Sukunimi <font color="#00ccc2">*</font></string>
 
     <!-- Preference Titles -->
     <string name="theme_title" translatable="false">Sovelluksen teema</string>

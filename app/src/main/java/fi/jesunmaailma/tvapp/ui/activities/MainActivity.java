@@ -17,7 +17,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -154,9 +157,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         pbLoadingNews.setVisibility(View.VISIBLE);
         pbLoadingEntertainment.setVisibility(View.VISIBLE);
 
-        getSliderData(getResources().getString(R.string.teeveet_dev_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&channels=all&user_id=1");
-        getNewsChannels(getResources().getString(R.string.teeveet_dev_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=Uutiset&user_id=1");
-        getEntertainmentChannel(getResources().getString(R.string.teeveet_dev_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=Viihde&user_id=1");
+        getSliderData(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&channels=all&user_id=1");
+        getNewsChannels(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=Uutiset&user_id=1");
+        getEntertainmentChannel(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=Viihde&user_id=1");
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -282,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             if (snapshot.exists()) {
                                 tvName.setText(
                                         String.format(
-                                                "Kirjauduit sisään nimellä:\n%s %s",
+                                                "Kirjauduit sisään tilillä:\n%s %s",
                                                 snapshot.getString("firstName"),
                                                 snapshot.getString("lastName")
                                         )
@@ -290,7 +293,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             } else {
                                 tvName.setText(
                                         String.format(
-                                                "Kirjauduit sisään nimellä:\n%s",
+                                                "Kirjauduit sisään tilillä:\n%s",
                                                 user.getDisplayName()
                                         )
                                 );
@@ -317,21 +320,89 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 closeDrawer(drawerLayout);
-                auth.signOut();
 
-                client.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        startActivity(
-                                new Intent(
-                                        getApplicationContext(),
-                                        MainActivity.class
-                                )
-                        );
-                        finish();
-                        overridePendingTransition(0, 0);
-                    }
-                });
+                documentReference = database.collection("Users").document(user.getUid());
+                documentReference
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                DocumentSnapshot snapshot = task.getResult();
+                                if (snapshot.exists()) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                    builder.setCancelable(false);
+                                    builder.setTitle(
+                                            String.format(
+                                                    "%s %s",
+                                                    snapshot.getString("firstName"),
+                                                    snapshot.getString("lastName")
+                                            )
+                                    );
+                                    builder.setMessage("Haluatko varmasti kirjautua ulos Teeveet-palvelusta?");
+                                    builder.setNegativeButton("Peruuta", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    builder.setPositiveButton("Kirjaudu ulos", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            auth.signOut();
+
+                                            client.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    startActivity(
+                                                            new Intent(
+                                                                    getApplicationContext(),
+                                                                    MainActivity.class
+                                                            )
+                                                    );
+                                                    finish();
+                                                    overridePendingTransition(0, 0);
+                                                }
+                                            });
+                                        }
+                                    });
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                } else {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                                    builder.setCancelable(false);
+                                    builder.setTitle(user.getDisplayName());
+                                    builder.setMessage("Haluatko varmasti kirjautua ulos Teeveet-palvelusta?");
+                                    builder.setNegativeButton("Peruuta", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                                    builder.setPositiveButton("Kirjaudu ulos", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            auth.signOut();
+
+                                            client.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    startActivity(
+                                                            new Intent(
+                                                                    getApplicationContext(),
+                                                                    MainActivity.class
+                                                            )
+                                                    );
+                                                    finish();
+                                                    overridePendingTransition(0, 0);
+                                                }
+                                            });
+                                        }
+                                    });
+                                    AlertDialog dialog = builder.create();
+                                    dialog.show();
+                                }
+                            }
+                        });
             }
         });
     }
@@ -340,6 +411,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.mi_refresh) {
+            pbLoadingSlider.setVisibility(View.VISIBLE);
+            pbLoadingNews.setVisibility(View.VISIBLE);
+            pbLoadingEntertainment.setVisibility(View.VISIBLE);
+
+            errorContainer.setVisibility(View.GONE);
+
+            bigSliderList.setVisibility(View.GONE);
+            getSliderData(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&channels=all&user_id=1");
+
+            newsChannelList.setVisibility(View.GONE);
+            getNewsChannels(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=Uutiset&user_id=1");
+
+            enterChannelList.setVisibility(View.GONE);
+            getEntertainmentChannel(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=Viihde&user_id=1");
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -353,11 +452,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(new Intent(getApplicationContext(), Categories.class));
         }
 
+        if (item.getItemId() == R.id.mi_settings) {
+            closeDrawer(drawerLayout);
+            startActivity(new Intent(getApplicationContext(), Settings.class));
+        }
+
         if (item.getItemId() == R.id.mi_exit) {
             closeDrawer(drawerLayout);
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setCancelable(false);
-            builder.setMessage("Haluatko varmasti poistua TV App-palvelusta?");
+            builder.setMessage("Haluatko varmasti poistua Teeveet-palvelusta?");
             builder.setNegativeButton("Kyllä", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -372,11 +476,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             });
             AlertDialog dialog = builder.create();
             dialog.show();
-        }
-
-        if (item.getItemId() == R.id.mi_settings) {
-            closeDrawer(drawerLayout);
-            startActivity(new Intent(getApplicationContext(), Settings.class));
         }
         return false;
     }

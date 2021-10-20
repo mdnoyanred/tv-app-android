@@ -35,7 +35,7 @@ public class ChannelDataService {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                onDataResponse.onError(error.getLocalizedMessage());
+                onDataResponse.onError(error.getMessage());
             }
         });
 
