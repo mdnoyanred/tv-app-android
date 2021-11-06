@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Teeveet</string>
 
-    <string name="teeveet_prod_api_url" translatable="false">https://jesunmaailma.ml/livetv-cms/api.php</string>
-    <string name="teeveet_dev_api_url" translatable="false">http://jesunmaailma.tk/livetv-cms/api.php</string>
+    <string name="teeveet_prod_api_url" translatable="false">https://jesunmaailma.ml/livetv-cms/api/v1/api.php</string>
+    <string name="teeveet_dev_api_url" translatable="false">http://jesunmaailma.tk/livetv-cms/api/v1/api.php</string>
 
     <string name="open">open</string>
     <string name="close">close</string>

@@ -6,10 +6,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONObject;
+import org.json.JSONArray;
 
 public class ChannelDataService {
     Context context;
@@ -19,7 +19,7 @@ public class ChannelDataService {
     }
 
     public interface OnDataResponse {
-        void onResponse(JSONObject response);
+        void onResponse(JSONArray response);
         void onError(String error);
     }
 
@@ -27,9 +27,9 @@ public class ChannelDataService {
 
         RequestQueue queue = Volley.newRequestQueue(context);
 
-        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONArray response) {
                 onDataResponse.onResponse(response);
             }
         }, new Response.ErrorListener() {
@@ -39,7 +39,7 @@ public class ChannelDataService {
             }
         });
 
-        queue.add(objectRequest);
+        queue.add(arrayRequest);
     }
 
 }

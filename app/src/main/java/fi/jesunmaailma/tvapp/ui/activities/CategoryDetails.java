@@ -23,6 +23,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -138,7 +139,7 @@ public class CategoryDetails extends AppCompatActivity {
 
         channelService.getChannelData(url, new ChannelDataService.OnDataResponse() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONArray response) {
                 pbCategoryDetails.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
                 categoryDetailsList.setVisibility(View.VISIBLE);
@@ -148,7 +149,7 @@ public class CategoryDetails extends AppCompatActivity {
                 for (int i = 0; i < response.length(); i++) {
 
                     try {
-                        JSONObject channelData = response.getJSONObject(String.valueOf(i));
+                        JSONObject channelData = response.getJSONObject(i);
 
                         errorContainer.setVisibility(View.GONE);
 

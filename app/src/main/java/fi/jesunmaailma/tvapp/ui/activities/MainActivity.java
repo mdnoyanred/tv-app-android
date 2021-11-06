@@ -41,6 +41,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -483,7 +484,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void getSliderData(String url) {
         service.getChannelData(url, new ChannelDataService.OnDataResponse() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONArray response) {
 
                 swipeRefreshLayout.setRefreshing(false);
                 pbLoadingSlider.setVisibility(View.GONE);
@@ -496,7 +497,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 for (int i = 0; i < response.length(); i++) {
 
                     try {
-                        JSONObject channelData = response.getJSONObject(String.valueOf(i));
+                        JSONObject channelData = response.getJSONObject(i);
 
                         Channel channel = new Channel();
 
@@ -551,7 +552,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         service.getChannelData(url, new ChannelDataService.OnDataResponse() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONArray response) {
 
                 swipeRefreshLayout.setRefreshing(false);
 
@@ -566,7 +567,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 for (int i = 0; i < response.length(); i++) {
 
                     try {
-                        JSONObject channelData = response.getJSONObject(String.valueOf(i));
+                        JSONObject channelData = response.getJSONObject(i);
 
                         Channel channel = new Channel();
 
@@ -621,7 +622,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         service.getChannelData(url, new ChannelDataService.OnDataResponse() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONArray response) {
 
                 swipeRefreshLayout.setRefreshing(false);
 
@@ -636,7 +637,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 for (int i = 0; i < response.length(); i++) {
 
                     try {
-                        JSONObject channelData = response.getJSONObject(String.valueOf(i));
+                        JSONObject channelData = response.getJSONObject(i);
 
                         Channel channel = new Channel();
 

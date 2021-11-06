@@ -37,8 +37,8 @@
 
         <item name="container_background">#00142f</item>
         <item name="background_color">#00142f</item>
-        <item name="snackbar_background_color">#00142F</item>
-        <item name="snackbar_text_color">#FFFFFF</item>
+        <item name="snackbar_background_color">#FFFFFF</item>
+        <item name="snackbar_text_color">#000000</item>
         <item name="text_color">#FFFFFF</item>
         <item name="container_text_color">#FFFFFF</item>
         <item name="appbar_color">@color/background_color</item>

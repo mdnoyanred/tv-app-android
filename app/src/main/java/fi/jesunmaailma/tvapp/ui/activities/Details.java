@@ -12,6 +12,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -35,6 +36,7 @@ import fi.jesunmaailma.tvapp.R;
 import fi.jesunmaailma.tvapp.models.Channel;
 
 public class Details extends AppCompatActivity {
+    public static final String TAG = "TAG";
     public static final String id = "id";
     public static final String name = "name";
     public static final String image = "image";
@@ -43,7 +45,7 @@ public class Details extends AppCompatActivity {
 
     PlayerView playerView;
     ImageView fbLink, twtLink, igLink, ytLink, webLink;
-    TextView channelTitle, channelDesc, playerTitle, playerDesc;
+    TextView channelTitle, channelDesc, playerDesc;
     ImageView ivLogo, fullScreenEnter, fullScreenExit;
 
     ProgressBar progressBar;
@@ -176,13 +178,11 @@ public class Details extends AppCompatActivity {
         channelTitle = findViewById(R.id.channelTitle);
         channelDesc = findViewById(R.id.channelDesc);
 
-        playerTitle = playerView.findViewById(R.id.playerName);
         playerDesc = playerView.findViewById(R.id.playerDesc);
 
         channelTitle.setText(channel.getName());
         channelDesc.setText(channel.getDescription());
 
-        playerTitle.setText(channel.getName());
         playerDesc.setText(channel.getDescription());
 
         fbLink.setOnClickListener(new View.OnClickListener() {
@@ -224,7 +224,7 @@ public class Details extends AppCompatActivity {
     }
 
     public void openLink(String url) {
-        int color_toolbar = Color.BLACK;
+        int color_toolbar = Color.parseColor("#00142F");
 
         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
         builder.setShowTitle(true);

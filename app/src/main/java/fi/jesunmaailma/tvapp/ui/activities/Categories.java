@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -122,7 +123,7 @@ public class Categories extends AppCompatActivity {
     public void getCategoryData(String url) {
         service.getChannelData(url, new ChannelDataService.OnDataResponse() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONArray response) {
                 pbCategories.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
                 categoriesList.setVisibility(View.VISIBLE);
@@ -132,7 +133,7 @@ public class Categories extends AppCompatActivity {
                 for (int i = 0; i < response.length(); i++) {
 
                     try {
-                        JSONObject categoryData = response.getJSONObject(String.valueOf(i));
+                        JSONObject categoryData = response.getJSONObject(i);
 
                         Category category = new Category();
 
