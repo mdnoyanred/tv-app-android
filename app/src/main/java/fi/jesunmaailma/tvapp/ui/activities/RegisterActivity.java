@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,14 +62,14 @@ public class RegisterActivity extends AppCompatActivity {
     FirebaseUser user;
     FirebaseFirestore database;
 
+    ProgressBar pbLoading;
+
     GoogleSignInClient client;
 
     AlertDialog.Builder builder;
     LayoutInflater inflater;
 
-    ProgressDialog progressDialog;
     ActionBar actionBar;
-
     Toolbar toolbar;
 
     String uid;
@@ -89,6 +90,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnSignInWithGoogle = findViewById(R.id.btn_sign_in_with_google);
         registerBtn = findViewById(R.id.registerBtn);
         loginActivityBtn = findViewById(R.id.login_activity_btn);
+        pbLoading = findViewById(R.id.pb_loading);
 
         btnForgotPassword = findViewById(R.id.forgotPasswordBtn);
 
@@ -109,10 +111,6 @@ public class RegisterActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle("Rekisteröidy");
         }
-
-        progressDialog = new ProgressDialog(RegisterActivity.this);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Rekisteröidytään...");
 
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
@@ -150,6 +148,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnSignInWithGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pbLoading.setVisibility(View.VISIBLE);
                 registerBtn.setEnabled(false);
                 Intent intent = client.getSignInIntent();
                 startActivityForResult(intent, GOOGLE_REQ_CODE);
@@ -189,7 +188,7 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-                progressDialog.show();
+                pbLoading.setVisibility(View.VISIBLE);
                 registerBtn.setEnabled(false);
 
                 auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -209,7 +208,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         updateUI();
                                     } else {
-                                        progressDialog.dismiss();
+                                        pbLoading.setVisibility(View.GONE);
                                         Toast.makeText(getApplicationContext(),
                                                 "Virhe! " + task.getException().getMessage(),
                                                 Toast.LENGTH_LONG).show();
@@ -218,7 +217,7 @@ public class RegisterActivity extends AppCompatActivity {
                             });
                         } else {
                             Toast.makeText(getApplicationContext(), "Virhe! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                            progressDialog.dismiss();
+                            pbLoading.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -289,7 +288,6 @@ public class RegisterActivity extends AppCompatActivity {
                     GoogleSignInAccount account = task
                             .getResult(ApiException.class);
                     if (account != null) {
-                        progressDialog.show();
                         AuthCredential credential = GoogleAuthProvider
                                 .getCredential(account.getIdToken(), null);
                         auth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -305,7 +303,7 @@ public class RegisterActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             } else {
-                progressDialog.dismiss();
+                pbLoading.setVisibility(View.GONE);
             }
         }
     }
@@ -333,7 +331,7 @@ public class RegisterActivity extends AppCompatActivity {
     };
 
     public void updateUI() {
-        progressDialog.dismiss();
+        pbLoading.setVisibility(View.GONE);
         startActivity(new Intent(getApplicationContext(), MainActivity.class)
                 .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
         finish();

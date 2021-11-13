@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,9 +63,9 @@ public class Login extends AppCompatActivity {
 
     FirebaseAnalytics analytics;
 
-    ProgressDialog progressDialog;
-    ActionBar actionBar;
+    ProgressBar pbLoading;
 
+    ActionBar actionBar;
     Toolbar toolbar;
 
     AlertDialog.Builder builder;
@@ -96,6 +97,8 @@ public class Login extends AppCompatActivity {
         builder = new AlertDialog.Builder(this);
         inflater = getLayoutInflater();
 
+        pbLoading = findViewById(R.id.pb_loading);
+
         toolbar = findViewById(R.id.tb_login);
         setSupportActionBar(toolbar);
 
@@ -105,10 +108,6 @@ public class Login extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle("Kirjaudu sisään");
         }
-
-        progressDialog = new ProgressDialog(Login.this);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Kirjaudutaan sisään...");
 
         GoogleSignInOptions options = new GoogleSignInOptions.Builder(
                 GoogleSignInOptions.DEFAULT_SIGN_IN
@@ -135,6 +134,7 @@ public class Login extends AppCompatActivity {
         btnSignInWithGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pbLoading.setVisibility(View.VISIBLE);
                 Intent intent = client.getSignInIntent();
                 startActivityForResult(intent, GOOGLE_AUTH_CODE);
             }
@@ -161,14 +161,14 @@ public class Login extends AppCompatActivity {
                     return;
                 }
 
-                progressDialog.show();
+                pbLoading.setVisibility(View.VISIBLE);
                 btnSignIn.setEnabled(false);
 
                 auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            progressDialog.dismiss();
+                            pbLoading.setVisibility(View.GONE);
                             startActivity(
                                     new Intent(
                                             getApplicationContext()
@@ -180,7 +180,7 @@ public class Login extends AppCompatActivity {
                             finish();
                             overridePendingTransition(0, 0);
                         } else {
-                            progressDialog.dismiss();
+                            pbLoading.setVisibility(View.GONE);
                             Toast.makeText(getApplicationContext(), "Virhe! " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
@@ -289,14 +289,13 @@ public class Login extends AppCompatActivity {
                     GoogleSignInAccount account = task
                             .getResult(ApiException.class);
                     if (account != null) {
-                        progressDialog.show();
                         AuthCredential credential = GoogleAuthProvider
                                 .getCredential(account.getIdToken(), null);
                         auth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    progressDialog.dismiss();
+                                    pbLoading.setVisibility(View.GONE);
                                     startActivity(new Intent(getApplicationContext(), MainActivity.class)
                                             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                                     finish();
@@ -313,7 +312,7 @@ public class Login extends AppCompatActivity {
                     e.printStackTrace();
                 }
             } else {
-                progressDialog.dismiss();
+                pbLoading.setVisibility(View.GONE);
             }
         }
     }
