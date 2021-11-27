@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
+import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
@@ -18,6 +19,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -423,21 +425,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.mi_refresh) {
-            pbLoadingSlider.setVisibility(View.VISIBLE);
-            pbLoadingNews.setVisibility(View.VISIBLE);
-            pbLoadingEntertainment.setVisibility(View.VISIBLE);
+        if (item.getItemId() == R.id.mi_open_in_browser) {
+            String teeveet_url = "https://teeveet.ml";
 
-            errorContainer.setVisibility(View.GONE);
-
-            bigSliderList.setVisibility(View.GONE);
-            getSliderData(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&channels=all&user_id=1");
-
-            newsChannelList.setVisibility(View.GONE);
-            getNewsChannels(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=Uutiset&user_id=1");
-
-            enterChannelList.setVisibility(View.GONE);
-            getEntertainmentChannel(getResources().getString(R.string.teeveet_prod_api_url) + "?api_key=1A4mgi2rBHCJdqggsYVx&category=Viihde&user_id=1");
+            Intent intent_teeveet_url = new Intent(Intent.ACTION_VIEW, Uri.parse(teeveet_url))
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent_teeveet_url);
         }
         return super.onOptionsItemSelected(item);
     }

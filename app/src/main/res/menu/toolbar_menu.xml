@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/mi_refresh"
-        android:icon="@drawable/ic_refresh"
-        android:title="Päivitä sisältö"
+        android:id="@+id/mi_open_in_browser"
+        android:icon="@drawable/ic_open_in_browser"
+        android:title="Avaa selaimessa"
         app:showAsAction="always" />
 </menu>
